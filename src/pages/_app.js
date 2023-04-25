@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Script from 'next/script';
 import {
   Hydrate,
@@ -8,10 +9,10 @@ import Layout from '@/components/Layout';
 import '../styles/globals.css';
 
 export default function App({ Component, pageProps }) {
-  const client = new QueryClient();
+  const [queryClient] = useState(() => new QueryClient());
 
   return (
-    <QueryClientProvider client={client}>
+    <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedState}>
         <Script
           strategy="beforeInteractive"
