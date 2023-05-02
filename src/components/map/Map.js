@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import styled from 'styled-components';
-import { Marker, ClusterMarker } from '@/components/map/Marker';
 import { makeMarkerClustering } from '@/lib/navermap/markerCluster';
+import { Marker, ClusterMarker } from '@/components/map/Marker';
+import StoreInfoWindow from '@/components/store/StoreInfoWindow';
 
 const cityHallPosition = { lat: 37.557527, lng: 126.9244669 };
 const MAX_ZOOM_LEVEL = 16;
@@ -24,7 +25,7 @@ const Map = ({ children, stores }) => {
         anchor: window.naver.maps.Point(20, 20),
       };
 
-      const markers = makeMarkers(map, stores);
+      const markers = makeMarkers(window.naver, map, stores);
 
       const MarkerClustering = makeMarkerClustering(window.naver);
       new MarkerClustering({
@@ -46,7 +47,21 @@ const Map = ({ children, stores }) => {
     initMap();
   }, []);
 
-  const makeMarkers = (map, stores) => {
+  const makeMarkers = (naver, map, stores) => {
+    const makeStoreInfoWindow = (store) => {
+      const infoWindowContent = renderToStaticMarkup(
+        <StoreInfoWindow store={store} />
+      );
+      return new naver.maps.InfoWindow({
+        content: infoWindowContent,
+        disableAnchor: true,
+        borderColor: 'transparent',
+        borderWidth: 0,
+        pixelOffset: new naver.maps.Point(30, -50),
+        maxWidth: 500,
+      });
+    };
+
     const markers = [];
     stores?.forEach((store) => {
       const { lat, lng } = store;
@@ -57,6 +72,15 @@ const Map = ({ children, stores }) => {
         icon: {
           content,
         },
+      });
+
+      const infoWindow = makeStoreInfoWindow(store);
+      naver.maps.Event.addListener(marker, 'click', function (e) {
+        if (infoWindow.getMap()) {
+          infoWindow.close();
+        } else {
+          infoWindow.open(map, marker);
+        }
       });
       markers.push(marker);
     });
@@ -70,6 +94,7 @@ const Wrapper = styled.div`
   width: 100vw;
   height: 100vh;
   z-index: 1;
+  position: relative;
 `;
 
 export default Map;
