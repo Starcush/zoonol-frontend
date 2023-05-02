@@ -6,7 +6,8 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query';
 import Layout from '@/components/Layout';
-import '../styles/globals.css';
+import '@/styles/globals.css';
+import '@/styles/fonts.css';
 
 export default function App({ Component, pageProps }) {
   const [queryClient] = useState(() => new QueryClient());

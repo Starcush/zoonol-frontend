@@ -3,10 +3,10 @@ import styled from 'styled-components';
 import { StoreMarkerLogo } from '@/icons/icon';
 
 const Marker = ({ store }) => {
-  const { id, name } = store;
+  const { seq, name } = store;
 
   return (
-    <MarkerWrapper className="marker" id={`marjer-${id}`} storeInfoName={name}>
+    <MarkerWrapper className="marker" id={seq}>
       <StoreMarkerLogo />
       <Info>{name}</Info>
     </MarkerWrapper>
@@ -34,6 +34,7 @@ const MarkerWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  cursor: pointer;
 
   &:after {
     border-top: 6px solid #111111;
