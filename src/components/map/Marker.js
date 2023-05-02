@@ -2,18 +2,27 @@ import React from 'react';
 import styled from 'styled-components';
 import { StoreMarkerLogo } from '@/icons/icon';
 
-export default function Marker({ store }) {
-  const { name } = store;
+const Marker = ({ store }) => {
+  const { seq, name } = store;
 
   return (
-    <Wrapper>
+    <MarkerWrapper className="marker" id={seq}>
       <StoreMarkerLogo />
       <Info>{name}</Info>
-    </Wrapper>
+    </MarkerWrapper>
   );
-}
+};
 
-const Wrapper = styled.div`
+const ClusterMarker = () => {
+  return (
+    <ClusterMarkerWrapper>
+      <StoreMarkerLogo />
+      <ClusterCount id="cluster-count" />
+    </ClusterMarkerWrapper>
+  );
+};
+
+const MarkerWrapper = styled.div`
   background-color: #111111;
   padding: 3px 5px 3px 3px;
   border: 1px solid #111111;
@@ -25,6 +34,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  cursor: pointer;
 
   &:after {
     border-top: 6px solid #111111;
@@ -48,3 +58,18 @@ const Info = styled.div`
     font-size: 12px;
   }
 `;
+
+const ClusterMarkerWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  background-color: #555e5d;
+  border-radius: 50px;
+  padding: 8px 10px;
+`;
+
+const ClusterCount = styled.span`
+  color: #f8f3d4;
+  margin-left: 8px;
+`;
+
+export { Marker, ClusterMarker };
