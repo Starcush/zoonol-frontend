@@ -22,7 +22,7 @@ export default function Home() {
     <>
       <Head>
         <title>주인아 놀자</title>
-        <meta name="description" content="description" />
+        <meta name="description" content="반려견 동반이 가능한 가게 지도" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta
           name="naver-site-verification"
