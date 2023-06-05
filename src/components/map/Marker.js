@@ -38,6 +38,7 @@ const NameWrapper = styled.div`
   bottom: ${({ zoonolPlace }) => (zoonolPlace ? '42px' : '38px')};
   left: -10px;
   width: 200px;
+  z-index: 1;
 `;
 
 const Info = styled.div`
@@ -52,4 +53,4 @@ const Info = styled.div`
   }
 `;
 
-export { Marker, ClusterMarker };
+export { Marker };
