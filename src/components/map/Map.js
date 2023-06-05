@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import styled from 'styled-components';
-import { makeMarkerClustering } from '@/lib/navermap/markerCluster';
-import { Marker, ClusterMarker } from '@/components/map/Marker';
+import { Marker } from '@/components/map/Marker';
 import StoreInfoWindow from '@/components/store/StoreInfoWindow';
+
+// todo: 겹침은 당장 중요하진 않고 infowindow 하는게 시급하다
 
 const cityHallPosition = { lat: 37.557527, lng: 126.9244669 };
 const MAX_ZOOM_LEVEL = 16;
@@ -19,70 +20,51 @@ const Map = ({ children, stores }) => {
         ),
       });
 
-      const htmlMarker1 = {
-        content: renderToStaticMarkup(<ClusterMarker />),
-        size: window.naver.maps.Size(40, 40),
-        anchor: window.naver.maps.Point(20, 20),
-      };
-
-      const markers = makeMarkers(window.naver, map, stores);
-
-      const MarkerClustering = makeMarkerClustering(window.naver);
-      new MarkerClustering({
-        minClusterSize: 2,
-        maxZoom: 15,
-        map: map,
-        markers: markers,
-        disableClickZoom: false,
-        gridSize: 120,
-        icons: [htmlMarker1],
-        indexGenerator: [10],
-        stylingFunction: function (clusterMarker, count) {
-          const el = (clusterMarker
-            .getElement()
-            .querySelector('#cluster-count').innerText = count);
-        },
-      });
+      makeMarkers(window.naver, map, stores);
     }
     initMap();
   }, []);
 
   const makeMarkers = (naver, map, stores) => {
-    const makeStoreInfoWindow = (store) => {
-      const infoWindowContent = renderToStaticMarkup(
-        <StoreInfoWindow store={store} />
-      );
-      return new naver.maps.InfoWindow({
-        content: infoWindowContent,
-        disableAnchor: true,
-        borderColor: 'transparent',
-        borderWidth: 0,
-        pixelOffset: new naver.maps.Point(30, -50),
-        maxWidth: 500,
-      });
-    };
+    // const makeStoreInfoWindow = (store) => {
+    //   const infoWindowContent = renderToStaticMarkup(
+    //     <StoreInfoWindow store={store} />
+    //   );
+
+    //   return new naver.maps.InfoWindow({
+    //     content: infoWindowContent,
+    //     disableAnchor: true,
+    //     borderColor: 'transparent',
+    //     borderWidth: 0,
+    //     pixelOffset: new naver.maps.Point(30, -50),
+    //     maxWidth: 500,
+    //   });
+    // };
 
     const markers = [];
     stores?.forEach((store) => {
-      const { lat, lng } = store;
+      const { lat, lng, zoonol_place, name } = store;
+      const markerSize = zoonol_place ? 36 : 30;
       const content = renderToStaticMarkup(<Marker store={store} />);
       const marker = new naver.maps.Marker({
         map,
         position: new naver.maps.LatLng(lat, lng),
         icon: {
           content,
+          origin: new naver.maps.Point(0, 0),
+          size: new naver.maps.Size(markerSize, markerSize),
         },
       });
 
-      const infoWindow = makeStoreInfoWindow(store);
-      naver.maps.Event.addListener(marker, 'click', function (e) {
-        if (infoWindow.getMap()) {
-          infoWindow.close();
-        } else {
-          infoWindow.open(map, marker);
-        }
-      });
-      markers.push(marker);
+      // const infoWindow = makeStoreInfoWindow(store);
+      // naver.maps.Event.addListener(marker, 'click', function (e) {
+      //   if (infoWindow.getMap()) {
+      //     infoWindow.close();
+      //   } else {
+      //     infoWindow.open(map, marker);
+      //   }
+      // });
+      // markers.push(marker);
     });
     return markers;
   };

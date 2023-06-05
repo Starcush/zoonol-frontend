@@ -1,75 +1,55 @@
 import React from 'react';
 import styled from 'styled-components';
-import { StoreMarkerLogo } from '@/icons/icon';
+import Image from 'next/image';
+import * as Icon from '@/icons/icon';
 
 const Marker = ({ store }) => {
-  const { seq, name } = store;
+  const { name, zoonol_place } = store;
 
-  return (
-    <MarkerWrapper className="marker" id={seq}>
-      <StoreMarkerLogo />
-      <Info>{name}</Info>
-    </MarkerWrapper>
-  );
+  const ZoonolPlaceMarker = () => {
+    return (
+      <MarkerWrapper>
+        <Image src={Icon.zoonolPlaceIcon} alt="zoonol-place-icon" />
+        <NameWrapper zoonolPlace={zoonol_place}>
+          <Info zoonolPlace={zoonol_place}>{name}</Info>
+        </NameWrapper>
+      </MarkerWrapper>
+    );
+  };
+
+  const NonZoonolPlaceMarker = () => {
+    return (
+      <MarkerWrapper>
+        <Icon.NonZoonolPlaceIcon />
+        <NameWrapper zoonolPlace={zoonol_place}>
+          <Info zoonolPlace={zoonol_place}>{name}</Info>
+        </NameWrapper>
+      </MarkerWrapper>
+    );
+  };
+
+  return zoonol_place ? <ZoonolPlaceMarker /> : <NonZoonolPlaceMarker />;
 };
 
-const ClusterMarker = () => {
-  return (
-    <ClusterMarkerWrapper>
-      <StoreMarkerLogo />
-      <ClusterCount id="cluster-count" />
-    </ClusterMarkerWrapper>
-  );
-};
+const MarkerWrapper = styled.div``;
 
-const MarkerWrapper = styled.div`
-  background-color: #111111;
-  padding: 3px 5px 3px 3px;
-  border: 1px solid #111111;
-  border-radius: 18px;
+const NameWrapper = styled.div`
   position: absolute;
-  white-space: nowrap;
-  bottom: 3px;
-  left: -15px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  cursor: pointer;
-
-  &:after {
-    border-top: 6px solid #111111;
-    border-left: 6px solid transparent;
-    border-right: 6px solid transparent;
-    border-bottom: 0 solid transparent;
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 11px;
-  }
+  bottom: ${({ zoonolPlace }) => (zoonolPlace ? '42px' : '38px')};
+  left: -10px;
+  width: 200px;
 `;
 
 const Info = styled.div`
   margin-left: 3px;
   font-weight: 600;
   font-size: 14px;
-  color: #f8f3d4;
+  color: ${({ zoonolPlace }) => (zoonolPlace ? '#545454' : '#545454')};
+  text-shadow: -2px 0 #ffffff, 0 2px #ffffff, 2px 0 #ffffff, 0 -2px #ffffff;
 
   @media screen and (max-width: 768px) {
-    font-size: 12px;
+    font-size: 14px;
   }
-`;
-
-const ClusterMarkerWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  background-color: #555e5d;
-  border-radius: 50px;
-  padding: 8px 10px;
-`;
-
-const ClusterCount = styled.span`
-  color: #f8f3d4;
-  margin-left: 8px;
 `;
 
 export { Marker, ClusterMarker };
