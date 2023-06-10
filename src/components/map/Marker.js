@@ -4,14 +4,19 @@ import Image from 'next/image';
 import * as Icon from '@/icons/icon';
 
 const Marker = ({ store }) => {
-  const { name, zoonol_place } = store;
+  const { name, zoonolPlace } = store;
 
   const ZoonolPlaceMarker = () => {
     return (
       <MarkerWrapper>
-        <Image src={Icon.zoonolPlaceIcon} alt="zoonol-place-icon" />
-        <NameWrapper zoonolPlace={zoonol_place}>
-          <Info zoonolPlace={zoonol_place}>{name}</Info>
+        <Image
+          src={Icon.zoonolPlaceIcon}
+          alt="zoonol-place-icon"
+          width={36}
+          height={36}
+        />
+        <NameWrapper zoonolPlace={zoonolPlace}>
+          <Info zoonolPlace={zoonolPlace}>{name}</Info>
         </NameWrapper>
       </MarkerWrapper>
     );
@@ -21,14 +26,14 @@ const Marker = ({ store }) => {
     return (
       <MarkerWrapper>
         <Icon.NonZoonolPlaceIcon />
-        <NameWrapper zoonolPlace={zoonol_place}>
-          <Info zoonolPlace={zoonol_place}>{name}</Info>
+        <NameWrapper zoonolPlace={zoonolPlace}>
+          <Info zoonolPlace={zoonolPlace}>{name}</Info>
         </NameWrapper>
       </MarkerWrapper>
     );
   };
 
-  return zoonol_place ? <ZoonolPlaceMarker /> : <NonZoonolPlaceMarker />;
+  return zoonolPlace ? <ZoonolPlaceMarker /> : <NonZoonolPlaceMarker />;
 };
 
 const MarkerWrapper = styled.div``;
