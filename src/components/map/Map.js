@@ -21,7 +21,7 @@ const Map = ({ children, stores }) => {
       });
 
       makeMarkers(window.naver, map, stores);
-      console.log(map);
+
       window.naver.maps.Event.addListener(map, 'click', function (e) {
         setVisibleStore(null);
       });
