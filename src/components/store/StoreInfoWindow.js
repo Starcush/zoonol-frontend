@@ -91,7 +91,7 @@ const StoreInfoWindow = ({ store, closeInfoWindow }) => {
           <Thumbnail
             src={thumbnail}
             layout="fill"
-            objectFit="cover"
+            objectFit="cover" // todo 이거 곧 없어진다는데 수정해보자
             alt={`${name}-thumbnail`}
           />
         </ThumbnailWrapper>
@@ -130,6 +130,16 @@ const Wrapper = styled.div`
   top: 25px;
   left: 25px;
   width: 410px;
+
+  @media screen and (max-width: 768px) {
+    max-width: 100%;
+    width: calc(100% - 40px - 30px);
+    max-height: 40%;
+    bottom: 30px;
+    left: 15px;
+    top: auto;
+    overflow-y: auto;
+  }
 `;
 
 const StoreInfoWrapper = styled.div`

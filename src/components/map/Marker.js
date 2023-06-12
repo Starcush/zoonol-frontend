@@ -54,7 +54,7 @@ const Info = styled.div`
   text-shadow: -2px 0 #ffffff, 0 2px #ffffff, 2px 0 #ffffff, 0 -2px #ffffff;
 
   @media screen and (max-width: 768px) {
-    font-size: 14px;
+    font-size: 12px;
   }
 `;
 
