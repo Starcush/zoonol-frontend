@@ -8,7 +8,7 @@ import {
 import Layout from '@/components/Layout';
 import '@/styles/globals.css';
 import '@/styles/fonts.css';
-import * as gtag from '@lib/gtag';
+import * as gtag from '@/lib/gtag';
 
 export default function App({ Component, pageProps }) {
   const [queryClient] = useState(() => new QueryClient());
