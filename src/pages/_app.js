@@ -8,6 +8,7 @@ import {
 import Layout from '@/components/Layout';
 import '@/styles/globals.css';
 import '@/styles/fonts.css';
+import * as gtag from '@lib/gtag';
 
 export default function App({ Component, pageProps }) {
   const [queryClient] = useState(() => new QueryClient());
@@ -19,6 +20,28 @@ export default function App({ Component, pageProps }) {
           strategy="beforeInteractive"
           src={`https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.NEXT_PUBLIC_NAVER_MAP_ID}`}
         />
+        {process.env.NODE_ENV !== 'development' && (
+          <>
+            <Script
+              strategy="afterInteractive"
+              src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_ID}`}
+            />
+            <Script
+              id="gtag-init"
+              strategy="afterInteractive"
+              dangerouslySetInnerHTML={{
+                __html: `
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${gtag.GA_ID}', {
+                  page_path: window.location.pathname,
+                });
+              `,
+              }}
+            />
+          </>
+        )}
         <Layout>
           <Component {...pageProps} />
         </Layout>
