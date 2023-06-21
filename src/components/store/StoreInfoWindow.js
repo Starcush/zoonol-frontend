@@ -8,6 +8,7 @@ import {
   RESTAURANT_CATEGORY_SEQ,
   CAFE_CATEGORY_SEQ,
 } from '@/constants/constant';
+import ImageLoading from '@/components/common/ImageLoading';
 
 dayjs.locale('ko');
 
@@ -75,11 +76,17 @@ const StoreInfoWindow = ({ store, closeInfoWindow }) => {
                 {`@${name}`}
               </StoreLink>
             </ZoonolInfo>
-            <ZoonolInfo>
-              <StoreLink href={zoonolFeedUrl} target="_blank" rel="noreferrer">
-                {`@${name} in zoonol_`}
-              </StoreLink>
-            </ZoonolInfo>
+            {zoonolFeedUrl && (
+              <ZoonolInfo>
+                <StoreLink
+                  href={zoonolFeedUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {`@${name} in zoonol_`}
+                </StoreLink>
+              </ZoonolInfo>
+            )}
           </ZoonolInfoRow>
         </ZoonolInfoWrapper>
       )}
@@ -88,10 +95,13 @@ const StoreInfoWindow = ({ store, closeInfoWindow }) => {
       </StoreInfoWrapper>
       {thumbnail && (
         <ThumbnailWrapper>
+          <ImageLoading width={400} height={200} />
           <Thumbnail
             src={thumbnail}
-            layout="fill"
-            objectFit="cover" // todo 이거 곧 없어진다는데 수정해보자
+            width={400}
+            height={200}
+            blurDataURL={thumbnail}
+            placeholder="blur"
             alt={`${name}-thumbnail`}
           />
         </ThumbnailWrapper>
@@ -183,6 +193,9 @@ const ThumbnailWrapper = styled.div`
 
 const Thumbnail = styled(Image)`
   border-radius: 4px;
+  position: absolute;
+  top: 0;
+  left: 0;
 `;
 
 const ZoonolInfoWrapper = styled.div`

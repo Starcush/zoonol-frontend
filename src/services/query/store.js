@@ -1,18 +1,18 @@
 import { useQuery } from '@tanstack/react-query';
-import StoreService from '@/services/api/store';
+import { storeService } from '@/services/api/store';
 
-export default class StoreQuery {
-  constructor() {
-    this.storeServices = new StoreService();
-    this.keys = {
-      list: ['store', 'list'],
-    };
-  }
+const keys = {
+  list: ['store', 'list'],
+};
 
-  useStores = async () => {
+const storeQuery = {
+  async useStores(params) {
     return useQuery({
-      queryKey: this.keys.list,
-      queryFn: this.storeServices.getStoreList,
+      queryKey: keys.list,
+      queryFn: storeService.getStoreList,
+      ...params,
     });
-  };
-}
+  },
+};
+
+export { keys, storeQuery };
