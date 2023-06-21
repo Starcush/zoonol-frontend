@@ -17,7 +17,7 @@ const Wrapper = styled.div`
   height: ${({ height }) => `${height}px`};
   width: ${({ width }) => `${width}px`};
   animation-name: ${shine};
-  animation-duration: 3s;
+  animation-duration: 2s;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
   border-radius: 4px;

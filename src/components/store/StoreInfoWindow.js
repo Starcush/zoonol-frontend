@@ -10,6 +10,8 @@ import {
 } from '@/constants/constant';
 import ImageLoading from '@/components/common/ImageLoading';
 
+// todo: image에서 layout이라는 속성이 없어질거라 image의 width, height를 지정해줘야 한다. 이를 좀 더 부드럽게 하려면 mobile에서는 bottom sheet UI를 변경해주는게 좋을거 같다.
+
 dayjs.locale('ko');
 
 const StoreInfoWindow = ({ store, closeInfoWindow }) => {
@@ -98,10 +100,12 @@ const StoreInfoWindow = ({ store, closeInfoWindow }) => {
           <ImageLoading width={400} height={200} />
           <Thumbnail
             src={thumbnail}
-            width={400}
-            height={200}
-            blurDataURL={thumbnail}
-            placeholder="blur"
+            layout="fill"
+            objectFit="cover" // todo 이거 곧 없어진다는데 수정해보자
+            // width={400}
+            // height={200}
+            // blurDataURL={thumbnail}
+            // placeholder="blur"
             alt={`${name}-thumbnail`}
           />
         </ThumbnailWrapper>
@@ -237,22 +241,19 @@ const InfoUpdateAt = styled.div`
   margin-bottom: 2px;
 `;
 
-const ZoonolInstagramLink = styled.a`
-  cursor: pointer;
-  font-weight: 600;
-
-  &:visited {
-    color: inherit;
-  }
-`;
-
-const StoreLink = styled.a`
-  cursor: pointer;
+const InfoWindowLink = styled.a`
   text-decoration: none;
+  cursor: pointer;
 
   &:visited {
     color: inherit;
   }
 `;
+
+const ZoonolInstagramLink = styled(InfoWindowLink)`
+  font-weight: 600;
+`;
+
+const StoreLink = styled(InfoWindowLink)``;
 
 export default StoreInfoWindow;
