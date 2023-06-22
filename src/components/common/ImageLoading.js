@@ -1,8 +1,8 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 
-const ImageLoading = ({ width, height }) => {
-  return <Wrapper height={height} width={width} />;
+const ImageLoading = () => {
+  return <Wrapper />;
 };
 
 const shine = keyframes`
@@ -14,13 +14,14 @@ const shine = keyframes`
 `;
 
 const Wrapper = styled.div`
-  height: ${({ height }) => `${height}px`};
-  width: ${({ width }) => `${width}px`};
   animation-name: ${shine};
   animation-duration: 2s;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
   border-radius: 4px;
+  position: absolute;
+  top: 0;
+  left: 0;
 `;
 
 export default ImageLoading;

@@ -97,7 +97,7 @@ const StoreInfoWindow = ({ store, closeInfoWindow }) => {
       </StoreInfoWrapper>
       {thumbnail && (
         <ThumbnailWrapper>
-          <ImageLoading width={400} height={200} />
+          <ImageLoading />
           <Thumbnail
             src={thumbnail}
             layout="fill"
