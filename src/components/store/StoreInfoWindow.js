@@ -7,6 +7,7 @@ import { CloseIcon } from '@/icons/icon';
 import {
   RESTAURANT_CATEGORY_SEQ,
   CAFE_CATEGORY_SEQ,
+  PUB_CATEGORY_SEQ,
 } from '@/constants/constant';
 import ImageLoading from '@/components/common/ImageLoading';
 
@@ -54,6 +55,9 @@ const StoreInfoWindow = ({ store, closeInfoWindow }) => {
       break;
     case CAFE_CATEGORY_SEQ:
       category = '카페';
+      break;
+    case PUB_CATEGORY_SEQ:
+      category = '호프';
       break;
   }
 
