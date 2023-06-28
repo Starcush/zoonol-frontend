@@ -19,18 +19,27 @@ const Map = ({ children, stores }) => {
           cityHallPosition.lng
         ),
       });
-
-      makeMarkers(window.naver, map, stores);
+      const markersInfo = makeMarkers(window.naver, map, stores);
 
       window.naver.maps.Event.addListener(map, 'click', function (e) {
         setVisibleStore(null);
+      });
+
+      naver.maps.Event.addListener(map, 'zoom_changed', function (zoom) {
+        const TRIGGER_ZOOM_LEVEL = 12;
+        const isHideStoreName = zoom <= TRIGGER_ZOOM_LEVEL;
+        if (isHideStoreName) {
+          handleMarkersByZoom(markersInfo, isHideStoreName);
+        } else {
+          handleMarkersByZoom(markersInfo, isHideStoreName);
+        }
       });
     }
     initMap();
   }, []);
 
   const makeMarkers = (naver, map, stores) => {
-    const markers = [];
+    const markersInfo = [];
     stores?.forEach((store) => {
       const { lat, lng, zoonolPlace } = store;
 
@@ -49,12 +58,23 @@ const Map = ({ children, stores }) => {
       naver.maps.Event.addListener(marker, 'click', function (e) {
         setVisibleStore(store);
       });
+      markersInfo.push({ marker, store });
     });
-    return markers;
+    return markersInfo;
   };
 
   const closeInfoWindow = () => {
     setVisibleStore(null);
+  };
+
+  const handleMarkersByZoom = (markersInfo, hideStoreName) => {
+    markersInfo.forEach(({ marker, store }) => {
+      const defaultIconOption = marker.getOptions().icon;
+      const content = renderToStaticMarkup(
+        <Marker store={store} hideStoreName={hideStoreName} />
+      );
+      marker.setOptions({ icon: { ...defaultIconOption, content } });
+    });
   };
 
   return (

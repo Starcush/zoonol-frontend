@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Image from 'next/image';
 import * as Icon from '@/icons/icon';
 
-const Marker = ({ store }) => {
+const Marker = ({ store, hideStoreName }) => {
   const { name, zoonolPlace } = store;
 
   const ZoonolPlaceMarker = () => {
@@ -15,7 +15,7 @@ const Marker = ({ store }) => {
           width={36}
           height={36}
         />
-        <NameWrapper zoonolPlace={zoonolPlace}>
+        <NameWrapper zoonolPlace={zoonolPlace} hideStoreName={hideStoreName}>
           <Info zoonolPlace={zoonolPlace}>{name}</Info>
         </NameWrapper>
       </MarkerWrapper>
@@ -26,7 +26,7 @@ const Marker = ({ store }) => {
     return (
       <MarkerWrapper>
         <Icon.NonZoonolPlaceIcon />
-        <NameWrapper zoonolPlace={zoonolPlace}>
+        <NameWrapper zoonolPlace={zoonolPlace} hideStoreName={hideStoreName}>
           <Info zoonolPlace={zoonolPlace}>{name}</Info>
         </NameWrapper>
       </MarkerWrapper>
@@ -44,6 +44,7 @@ const NameWrapper = styled.div`
   left: -10px;
   width: 200px;
   z-index: 1;
+  display: ${({ hideStoreName }) => (hideStoreName ? 'none' : 'block')};
 `;
 
 const Info = styled.div`
