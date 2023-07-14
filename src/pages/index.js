@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import styled from 'styled-components';
-import { defaultAxios } from '@/lib/axios';
+import { storeService } from '@/services/api/store';
 import Map from '@/components/map/Map';
 
 export default function Home() {
@@ -10,8 +10,8 @@ export default function Home() {
 
   useEffect(() => {
     const fetchInitalStoreData = async () => {
-      const { data } = await defaultAxios.get('/store/list');
-      const { stores } = data;
+      const { getStoreList } = storeService;
+      const { stores } = await getStoreList();
       setStores(stores);
       setIsLoading(false);
     };
