@@ -30,10 +30,10 @@ export default function Home() {
         />
         <meta property="og:title" content="주인아 놀자:주놀(zoonol)" />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://zoonol.com" />
+        <meta property="og:url" content="https://zooonol.com" />
         <meta
           property="og:image"
-          content="https://api.zoonol.com/assets/opengraph_image.jpg"
+          content="https://zoonol-bucket.nyc3.cdn.digitaloceanspaces.com/web-assets/opengraph_image.jpg"
         />
         <meta
           property="og:description"
