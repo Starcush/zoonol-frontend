@@ -26,7 +26,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta
           name="naver-site-verification"
-          content="0fc7af72b76c7d8fcc80542e10efae782d1dd4fe"
+          content="23003489028ab313878e59743b6ee1c72353f4fb"
         />
         <meta property="og:title" content="주인아 놀자:주놀(zoonol)" />
         <meta property="og:type" content="website" />
