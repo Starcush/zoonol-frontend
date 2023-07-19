@@ -89,7 +89,7 @@ const StoreInfoWindow = ({ store, closeInfoWindow }) => {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  {`@${name} in zoonol_`}
+                  {`@${name} in zooonol_`}
                 </StoreLink>
               </ZoonolInfo>
             )}
