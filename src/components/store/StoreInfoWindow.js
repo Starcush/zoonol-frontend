@@ -126,7 +126,7 @@ const StoreInfoWindow = ({ store, closeInfoWindow }) => {
               target="_blank"
               rel="noreferrer"
             >
-              @zoonol_
+              @zooonol_
             </ZoonolInstagramLink>
             로 연락주세요
           </InfoUpdateAt>
