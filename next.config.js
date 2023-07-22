@@ -9,6 +9,16 @@ const nextConfig = {
     });
     return config;
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'zoonol-bucket.nyc3.cdn.digitaloceanspaces.com',
+        port: '',
+        pathname: '/store/**',
+      },
+    ],
+  },
 };
 
 module.exports = nextConfig;

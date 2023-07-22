@@ -1,8 +1,10 @@
 import { defaultAxios } from '@/lib/axios';
 
-export default class StoreService {
+const storeService = {
   async getStoreList() {
     const { data } = await defaultAxios.get('/store/list');
-    return data?.stores;
-  }
-}
+    return data;
+  },
+};
+
+export { storeService };
