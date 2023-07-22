@@ -3,21 +3,20 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import styled from 'styled-components';
 import { Marker } from '@/components/map/Marker';
 import StoreInfoWindow from '@/components/store/StoreInfoWindow';
+import UserLocation from '@/components/map/UserLocation';
 
-const cityHallPosition = { lat: 37.557527, lng: 126.9244669 };
+const hongdae = { lat: 37.557527, lng: 126.9244669 };
 const MAX_ZOOM_LEVEL = 16;
 
 const Map = ({ children, stores }) => {
   const [visibleStore, setVisibleStore] = useState(null);
+  const [userLocation, setUserLocation] = useState(hongdae);
 
   useEffect(() => {
     async function initMap() {
       const map = new window.naver.maps.Map('map', {
         zoom: MAX_ZOOM_LEVEL,
-        center: new naver.maps.LatLng(
-          cityHallPosition.lat,
-          cityHallPosition.lng
-        ),
+        center: new naver.maps.LatLng(userLocation),
       });
       const markersInfo = makeMarkers(window.naver, map, stores);
 
@@ -36,7 +35,7 @@ const Map = ({ children, stores }) => {
       });
     }
     initMap();
-  }, []);
+  }, [userLocation]);
 
   const makeMarkers = (naver, map, stores) => {
     const markersInfo = [];
@@ -86,6 +85,7 @@ const Map = ({ children, stores }) => {
           closeInfoWindow={closeInfoWindow}
         />
       )}
+      <UserLocation setUserLocation={setUserLocation} />
     </Wrapper>
   );
 };
