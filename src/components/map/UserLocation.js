@@ -39,6 +39,11 @@ const Wrapper = styled.div`
   justify-content: center;
   box-shadow: 0px 0px 15px 0px #00000012;
   cursor: pointer;
+
+  @media screen and (max-width: 768px) {
+    bottom: 30px;
+    right: 20px;
+  }
 `;
 
 export default UserLocation;
