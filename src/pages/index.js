@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import styled from 'styled-components';
-import { defaultAxios } from '@/lib/axios';
+import { storeService } from '@/services/api/store';
 import Map from '@/components/map/Map';
 
 export default function Home() {
@@ -10,8 +10,8 @@ export default function Home() {
 
   useEffect(() => {
     const fetchInitalStoreData = async () => {
-      const { data } = await defaultAxios.get('/store/list');
-      const { stores } = data;
+      const { getStoreList } = storeService;
+      const { stores } = await getStoreList();
       setStores(stores);
       setIsLoading(false);
     };
@@ -26,14 +26,14 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta
           name="naver-site-verification"
-          content="0fc7af72b76c7d8fcc80542e10efae782d1dd4fe"
+          content="23003489028ab313878e59743b6ee1c72353f4fb"
         />
         <meta property="og:title" content="주인아 놀자:주놀(zoonol)" />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://zoonol.com" />
+        <meta property="og:url" content="https://zooonol.com" />
         <meta
           property="og:image"
-          content="https://api.zoonol.com/assets/opengraph_image.jpg"
+          content="https://zoonol-bucket.nyc3.cdn.digitaloceanspaces.com/web-assets/opengraph_image.jpg"
         />
         <meta
           property="og:description"
