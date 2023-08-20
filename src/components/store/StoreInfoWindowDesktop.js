@@ -110,6 +110,7 @@ const Wrapper = styled.div`
   top: 25px;
   left: 25px;
   width: 410px;
+  z-index: 2;
 `;
 
 const StoreInfoWrapper = styled.div`
