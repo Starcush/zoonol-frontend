@@ -4,63 +4,20 @@ import styled from 'styled-components';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 import { CloseIcon } from '@/icons/icon';
-import {
-  RESTAURANT_CATEGORY_SEQ,
-  CAFE_CATEGORY_SEQ,
-  PUB_CATEGORY_SEQ,
-} from '@/constants/constant';
 import ImageLoading from '@/components/common/ImageLoading';
-
-// todo: image에서 layout이라는 속성이 없어질거라 image의 width, height를 지정해줘야 한다. 이를 좀 더 부드럽게 하려면 mobile에서는 bottom sheet UI를 변경해주는게 좋을거 같다.
-// bottom sheet 형식으로 진행
 
 dayjs.locale('ko');
 
 const StoreInfoWindowDesktop = ({ store, closeInfoWindow }) => {
+  const { name, address, thumbnail, additionalInfo, homepage, zoonolFeedUrl } =
+    store;
   const {
-    name,
-    categorySeq,
-    address,
-    thumbnail,
-    offLeash,
-    largeDogAvailable,
-    zoonolPlace,
-    needCage,
-    infoUpdatedAt,
-    additionalInfo,
-    homepage,
-    zoonolFeedUrl,
-  } = store;
-
-  const isZoonolPlace = Boolean(zoonolPlace);
-  const convertedInfoUpdatedAt = dayjs(infoUpdatedAt).format('YYYY년 M월 D일');
-  const largeDogAvailableMessage = largeDogAvailable
-    ? '대형견 입장 가능'
-    : '대형견 입장 불가능';
-  let entranceCondition = '';
-  let category = '';
-
-  if (needCage) {
-    entranceCondition = '케이지 사용시 입장 가능';
-  } else {
-    if (offLeash) {
-      entranceCondition = '리드줄 없이 입장 가능';
-    } else {
-      entranceCondition = '리드줄 착용시 입장 가능';
-    }
-  }
-
-  switch (categorySeq) {
-    case RESTAURANT_CATEGORY_SEQ:
-      category = '식당';
-      break;
-    case CAFE_CATEGORY_SEQ:
-      category = '카페';
-      break;
-    case PUB_CATEGORY_SEQ:
-      category = '호프';
-      break;
-  }
+    isZoonolPlace,
+    convertedInfoUpdatedAt,
+    largeDogAvailableMessage,
+    entranceCondition,
+    category,
+  } = zoonolStoreInfo;
 
   return (
     <Wrapper>
@@ -149,16 +106,6 @@ const Wrapper = styled.div`
   top: 25px;
   left: 25px;
   width: 410px;
-
-  @media screen and (max-width: 768px) {
-    max-width: 100%;
-    width: calc(100% - 40px - 30px);
-    max-height: 40%;
-    bottom: 30px;
-    left: 15px;
-    top: auto;
-    overflow-y: auto;
-  }
 `;
 
 const StoreInfoWrapper = styled.div`
