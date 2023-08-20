@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { motion, useAnimate } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 // 자유를 너무 많이 주지 말고 2가지 포지션을 주고 아예 끄게 하거나 해야겠다
 
 const StoreInfoWindowMobile = ({ store, closeInfoWindow }) => {
+  const TOP_MAX = (-1 * window.innerHeight) / 2 + 80;
+
   const [y, setY] = useState(0);
   const [step, setStep] = useState(0);
 
@@ -12,16 +14,18 @@ const StoreInfoWindowMobile = ({ store, closeInfoWindow }) => {
     <Wrapper
       animate={{ y }}
       drag="y"
+      dragElastic={0}
+      dragMomentum={false}
       dragConstraints={{
         top: (-1 * window.innerHeight) / 2 + 80,
         bottom: window.innerHeight / 2 - 80,
       }}
-      onDrag={(event, info) => {
+      onDragEnd={(_, info) => {
         const deltaY = info.delta.y;
         if (deltaY > 0) {
-          // 위로, 어떻게 해야할지 봐야함
+          setY(0);
         } else {
-          // 아래로
+          setY(TOP_MAX);
         }
       }}
     >
@@ -45,8 +49,8 @@ const Wrapper = styled(motion.div)`
 `;
 
 const TopBar = styled.div`
-  height: 8px;
-  width: 100px;
+  height: 6px;
+  width: 80px;
   background-color: #cbcbcb;
   margin-top: 12px;
   border-radius: 4px;
