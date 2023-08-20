@@ -8,7 +8,11 @@ import ImageLoading from '@/components/common/ImageLoading';
 
 dayjs.locale('ko');
 
-const StoreInfoWindowDesktop = ({ store, closeInfoWindow }) => {
+const StoreInfoWindowDesktop = ({
+  store,
+  zoonolStoreInfo,
+  closeInfoWindow,
+}) => {
   const { name, address, thumbnail, additionalInfo, homepage, zoonolFeedUrl } =
     store;
   const {
