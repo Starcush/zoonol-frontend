@@ -5,20 +5,18 @@ const StoreList = ({ stores, openDeletePopup, openUpdatePopup }) => {
     const storeItemArr = [];
     for (const index in stores) {
       const store = stores[index];
-      storeItemArr.push(
-          getStoreItemObj(index, store)
-      )
+      storeItemArr.push(getStoreItemObj(index, store));
     }
     return storeItemArr;
-  }
+  };
 
   const onClickDeleteItem = (e, store) => {
     openDeletePopup(store);
-  }
+  };
 
   const onClickUpdateItem = (e, store) => {
     openUpdatePopup(store);
-  }
+  };
 
   const getStoreItemObj = (index, store) => {
     const storeItemObj = (
@@ -30,21 +28,31 @@ const StoreList = ({ stores, openDeletePopup, openUpdatePopup }) => {
           <StoreItemBlock />
           <StoreItemLabel>{store.address}</StoreItemLabel>
         </StoreItemLabelBox>
-        <StoreItemButton onClick={(e)=> {onClickDeleteItem(e, store)}}>삭제</StoreItemButton>
-        <StoreItemButton onClick={(e)=> {onClickUpdateItem(e, store)}}>수정</StoreItemButton>
+        <StoreItemButton
+          onClick={(e) => {
+            onClickDeleteItem(e, store);
+          }}
+        >
+          삭제
+        </StoreItemButton>
+        <StoreItemButton
+          onClick={(e) => {
+            onClickUpdateItem(e, store);
+          }}
+        >
+          수정
+        </StoreItemButton>
       </StoreItem>
     );
     return storeItemObj;
-  }
-  
+  };
+
   return (
     <StoreListWrap>
-      <StoreListBox>
-        {getStoreList()}
-      </StoreListBox>
+      <StoreListBox>{getStoreList()}</StoreListBox>
     </StoreListWrap>
   );
-}
+};
 
 export { StoreList };
 
@@ -79,15 +87,15 @@ const StoreItemLabel = styled.span`
   height: 100%;
   font-size: 18px;
   line-height: 40px;
-  display:block;
-  white-space:nowrap;
-  overflow:hidden;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
   text-overflow: ellipsis;
 `;
 
 const StoreItemBlock = styled.span`
   margin: 0 5px;
-`
+`;
 
 const StoreItemButton = styled.button`
   height: 100%;
