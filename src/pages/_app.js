@@ -20,6 +20,10 @@ export default function App({ Component, pageProps }) {
           strategy="beforeInteractive"
           src={`https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.NEXT_PUBLIC_NAVER_MAP_ID}`}
         />
+        <Script
+          strategy="beforeInteractive"
+          src={`https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.NEXT_PUBLIC_NAVER_MAP_ID}&submodules=geocoder`}
+        />
         {process.env.NODE_ENV !== 'development' && (
           <>
             <Script

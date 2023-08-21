@@ -80,12 +80,12 @@ const Map = ({ children, stores }) => {
   return (
     <Wrapper id="map">
       {children}
-      {visibleStore && (
+      {/* {visibleStore && (
         <StoreInfoWindow
           store={visibleStore}
           closeInfoWindow={closeInfoWindow}
         />
-      )}
+      )} */}
     </Wrapper>
   );
 };
