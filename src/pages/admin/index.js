@@ -76,8 +76,8 @@ export default function Admin() {
 
   // INSERT 기능 및 함수.
   const [inputs, setInputs] = useState({
-    place: '',
-    storeId: '',
+    zoonolPlace: '',
+    naverStoreId: '',
     name: '',
     phoneNumber: '',
     homepage: '',
@@ -90,9 +90,9 @@ export default function Admin() {
     lng: '',
     mapUrl: '',
     categorySeq: '',
-    infoUpdatedAt: '',
+    // infoUpdatedAt: '', todo: 이거 지우기로 함
     offLeash: '',
-    largeDog: '',
+    largeDogAvailable: '',
     thumbnail: '',
     additionalInfo: '',
     zoonolFeedUrl: '',
@@ -100,8 +100,8 @@ export default function Admin() {
 
   const resetInputs = () => {
     setInputs({
-      place: '',
-      storeId: '',
+      zoonolPlace: '',
+      naverStoreId: '',
       name: '',
       phoneNumber: '',
       homepage: '',
@@ -114,9 +114,9 @@ export default function Admin() {
       lng: '',
       mapUrl: '',
       categorySeq: '',
-      infoUpdatedAt: '',
+      // infoUpdatedAt: '', todo: 이거 지우기로 함
       offLeash: '',
-      largeDog: '',
+      largeDogAvailable: '',
       thumbnail: '',
       additionalInfo: '',
       zoonolFeedUrl: '',

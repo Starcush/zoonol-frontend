@@ -10,8 +10,8 @@ const setPopupTop = (title) => {
 
 const InsertPopup = ({ onChangeInput, fetchInsertStore, closeInsertPopup }) => {
   const stroeInfoArr = [
-    { id: 'zoonol_place', name: 'place', text: '' },
-    { id: 'naver_store_id', name: 'storeId', text: '네이버 스토어 ID' },
+    { id: 'zoonol_place', name: 'zoonolPlace', text: '' },
+    { id: 'naver_store_id', name: 'naverStoreId', text: '네이버 스토어 ID' },
     { id: 'name', name: 'name', text: '가게 명' },
     { id: 'phone_number', name: 'phoneNumber', text: '전화번호' },
     { id: 'homepage', name: 'homepage', text: '홈페이지' },
@@ -26,7 +26,7 @@ const InsertPopup = ({ onChangeInput, fetchInsertStore, closeInsertPopup }) => {
     { id: 'category_seq', name: 'categorySeq', text: '카테고리 시퀀스' },
     { id: 'info_updated_at', name: 'infoUpdatedAt', text: '' },
     { id: 'off_leash', name: 'offLeash', text: '' },
-    { id: 'large_dog_available', name: 'largeDog', text: '' },
+    { id: 'large_dog_available', name: 'largeDogAvaiable', text: '' },
     { id: 'thumbnail', name: 'thumbnail', text: '' },
     { id: 'additional_info', name: 'additionalInfo', text: '' },
     { id: 'zoonol_feed_url', name: 'zoonolFeedUrl', text: '' },
@@ -163,8 +163,8 @@ const DeletePopup = ({ storeInfo, closeDeletePopup, fetchDeleteStore }) => {
 
 const UpdatePopup = ({ storeInfo, onChangeInput, fetchUpdateStore, closeUpdatePopup }) => {
   const stroeInfoArr = [
-    { id: 'zoonol_place', name: 'place', text: '' },
-    { id: 'naver_store_id', name: 'storeId', text: '네이버 스토어 ID' },
+    { id: 'zoonol_place', name: 'zoonolPlace', text: '' },
+    { id: 'naver_store_id', name: 'naverStoreId', text: '네이버 스토어 ID' },
     { id: 'name', name: 'name', text: '가게 명' },
     { id: 'phone_number', name: 'phoneNumber', text: '전화번호' },
     { id: 'homepage', name: 'homepage', text: '홈페이지' },
@@ -179,7 +179,7 @@ const UpdatePopup = ({ storeInfo, onChangeInput, fetchUpdateStore, closeUpdatePo
     { id: 'category_seq', name: 'categorySeq', text: '카테고리 시퀀스' },
     { id: 'info_updated_at', name: 'infoUpdatedAt', text: '' },
     { id: 'off_leash', name: 'offLeash', text: '' },
-    { id: 'large_dog_available', name: 'largeDog', text: '' },
+    { id: 'large_dog_available', name: 'largeDogAvailable', text: '' },
     { id: 'thumbnail', name: 'thumbnail', text: '' },
     { id: 'additional_info', name: 'additionalInfo', text: '' },
     { id: 'zoonol_feed_url', name: 'zoonolFeedUrl', text: '' },

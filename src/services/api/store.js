@@ -17,7 +17,7 @@ const storeService = {
     const { data } = await defaultAxios.post(
       '/store/insert-store',
       {
-        params: queryParams,
+        ...storeInfo,
       },
       {}
     );
