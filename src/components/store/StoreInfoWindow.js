@@ -4,11 +4,7 @@ import styled from 'styled-components';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 import { CloseIcon } from '@/icons/icon';
-import {
-  RESTAURANT_CATEGORY_SEQ,
-  CAFE_CATEGORY_SEQ,
-  PUB_CATEGORY_SEQ,
-} from '@/constants/constant';
+import { RESTAURANT_CATEGORY_SEQ, CAFE_CATEGORY_SEQ, PUB_CATEGORY_SEQ } from '@/constants/constant';
 import ImageLoading from '@/components/common/ImageLoading';
 
 // todo: image에서 layout이라는 속성이 없어질거라 image의 width, height를 지정해줘야 한다. 이를 좀 더 부드럽게 하려면 mobile에서는 bottom sheet UI를 변경해주는게 좋을거 같다.
@@ -33,9 +29,7 @@ const StoreInfoWindow = ({ store, closeInfoWindow }) => {
 
   const isZoonolPlace = Boolean(zoonolPlace);
   const convertedInfoUpdatedAt = dayjs(infoUpdatedAt).format('YYYY년 M월 D일');
-  const largeDogAvailableMessage = largeDogAvailable
-    ? '대형견 입장 가능'
-    : '대형견 입장 불가능';
+  const largeDogAvailableMessage = largeDogAvailable ? '대형견 입장 가능' : '대형견 입장 불가능';
   let entranceCondition = '';
   let category = '';
 
@@ -84,11 +78,7 @@ const StoreInfoWindow = ({ store, closeInfoWindow }) => {
             </ZoonolInfo>
             {zoonolFeedUrl && (
               <ZoonolInfo>
-                <StoreLink
-                  href={zoonolFeedUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                >
+                <StoreLink href={zoonolFeedUrl} target="_blank" rel="noreferrer">
                   {`@${name} in zooonol_`}
                 </StoreLink>
               </ZoonolInfo>
@@ -116,9 +106,7 @@ const StoreInfoWindow = ({ store, closeInfoWindow }) => {
       )}
       {isZoonolPlace && (
         <InfoUpdateAtWrapper>
-          <InfoUpdateAt>
-            정보 업데이트 시기: {convertedInfoUpdatedAt}
-          </InfoUpdateAt>
+          <InfoUpdateAt>정보 업데이트 시기: {convertedInfoUpdatedAt}</InfoUpdateAt>
           <InfoUpdateAt small>
             * 정보가 변경됐다면{' '}
             <ZoonolInstagramLink

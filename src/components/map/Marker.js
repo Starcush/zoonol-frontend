@@ -9,12 +9,7 @@ const Marker = ({ store, hideStoreName }) => {
   const ZoonolPlaceMarker = () => {
     return (
       <MarkerWrapper>
-        <Image
-          src={Icon.zoonolPlaceIcon}
-          alt="zoonol-place-icon"
-          width={36}
-          height={36}
-        />
+        <Image src={Icon.zoonolPlaceIcon} alt="zoonol-place-icon" width={36} height={36} />
         <NameWrapper zoonolPlace={zoonolPlace} hideStoreName={hideStoreName}>
           <Info zoonolPlace={zoonolPlace}>{name}</Info>
         </NameWrapper>
@@ -52,7 +47,11 @@ const Info = styled.div`
   font-weight: 600;
   font-size: 14px;
   color: ${({ zoonolPlace }) => (zoonolPlace ? '#545454' : '#545454')};
-  text-shadow: -2px 0 #ffffff, 0 2px #ffffff, 2px 0 #ffffff, 0 -2px #ffffff;
+  text-shadow:
+    -2px 0 #ffffff,
+    0 2px #ffffff,
+    2px 0 #ffffff,
+    0 -2px #ffffff;
 
   @media screen and (max-width: 768px) {
     font-size: 12px;

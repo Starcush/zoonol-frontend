@@ -14,10 +14,7 @@ const Map = ({ children, stores }) => {
     async function initMap() {
       const map = new window.naver.maps.Map('map', {
         zoom: MAX_ZOOM_LEVEL,
-        center: new naver.maps.LatLng(
-          cityHallPosition.lat,
-          cityHallPosition.lng
-        ),
+        center: new naver.maps.LatLng(cityHallPosition.lat, cityHallPosition.lng),
       });
       const markersInfo = makeMarkers(window.naver, map, stores);
 
@@ -70,9 +67,7 @@ const Map = ({ children, stores }) => {
   const handleMarkersByZoom = (markersInfo, hideStoreName) => {
     markersInfo.forEach(({ marker, store }) => {
       const defaultIconOption = marker.getOptions().icon;
-      const content = renderToStaticMarkup(
-        <Marker store={store} hideStoreName={hideStoreName} />
-      );
+      const content = renderToStaticMarkup(<Marker store={store} hideStoreName={hideStoreName} />);
       marker.setOptions({ icon: { ...defaultIconOption, content } });
     });
   };

@@ -1,10 +1,6 @@
 import { useState } from 'react';
 import Script from 'next/script';
-import {
-  Hydrate,
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query';
+import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Layout from '@/components/Layout';
 import '@/styles/globals.css';
 import '@/styles/fonts.css';
