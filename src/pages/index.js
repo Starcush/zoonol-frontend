@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import { storeService } from '@/services/api/store';
 import Map from '@/components/map/Map';
 
+// 최신화된 Next.js 적용하는거 생각하기 -> React도 변화가 많아서 그것도 같이 배운다는 느낌
+
 export default function Home() {
   const [stores, setStores] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
