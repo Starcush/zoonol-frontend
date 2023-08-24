@@ -1,9 +1,0 @@
-# *
-User-agent: *
-Allow: /
-
-# Host
-Host: https://zoonol.com
-
-# Sitemaps
-Sitemap: https://zoonol.com/sitemap.xml
