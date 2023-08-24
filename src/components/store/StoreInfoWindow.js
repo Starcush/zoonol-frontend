@@ -14,7 +14,7 @@ import ImageLoading from '@/components/common/ImageLoading';
 
 const StoreInfoWindow = ({ store, closeInfoWindow }) => {
   const { innerWidth, innerHeight } = window;
-  const TOP_MAX = (-1 * innerHeight) / 2 + 80;
+  const TOP_MAX = (-1 * innerHeight) / 2;
   const BOTTOM_MIN = innerHeight / 2 - 80;
   const isMobile = innerWidth <= 768;
 
