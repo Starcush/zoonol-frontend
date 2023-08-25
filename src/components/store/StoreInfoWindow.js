@@ -199,7 +199,6 @@ const StoreInfoWindow = ({ store, closeInfoWindow }) => {
 const MobileWrapper = styled(motion.div)`
   position: absolute;
   top: 0;
-  /* right: 0; */
   background-color: #ffffff;
   width: 100%;
   height: 900px;
