@@ -20,7 +20,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          file: ./frontend/docker/Dockerfile
+          dockerfile: ./docker/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
           tags: starcush/zoonol-frontend:lastest
