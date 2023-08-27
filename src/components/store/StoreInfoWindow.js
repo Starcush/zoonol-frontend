@@ -1,7 +1,7 @@
 import React, { useState, Fragment } from 'react';
 import Image from 'next/image';
 import styled from 'styled-components';
-import { motion } from 'framer-motion';
+import { motion, useAnimation } from 'framer-motion';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 import {
@@ -13,9 +13,9 @@ import { ButtonSheetCloseIcon, CloseIcon } from '@/icons/icon';
 import ImageLoading from '@/components/common/ImageLoading';
 
 const StoreInfoWindow = ({ store, closeInfoWindow }) => {
-  const { innerWidth, innerHeight } = window;
-  const TOP_MAX = (-1 * innerHeight) / 2;
-  const BOTTOM_MIN = innerHeight / 2 - 80;
+  const controls = useAnimation();
+
+  const { innerWidth } = window;
   const isMobile = innerWidth <= 768;
 
   const {
@@ -64,6 +64,16 @@ const StoreInfoWindow = ({ store, closeInfoWindow }) => {
       category = '호프';
       break;
   }
+
+  const handleDragEnd = (_, info) => {
+    const shouldClose =
+      info.velocity.y > 20 || (info.velocity.y >= 0 && info.point.y > 45);
+    if (shouldClose) {
+      controls.start('hidden');
+    } else {
+      controls.start('visible');
+    }
+  };
 
   const StoreInfo = () => {
     return (
@@ -145,22 +155,19 @@ const StoreInfoWindow = ({ store, closeInfoWindow }) => {
     Mobile() {
       return (
         <MobileWrapper
-          animate={{ y }}
           drag="y"
+          initial="hidden"
+          animate={controls}
+          variants={{
+            visible: { y: '10%' },
+            hidden: { y: '60%' },
+          }}
           dragElastic={0.1}
           dragMomentum={false}
           dragConstraints={{
-            top: TOP_MAX,
-            bottom: BOTTOM_MIN,
+            top: 0,
           }}
-          onDragEnd={(_, info) => {
-            const deltaY = info.delta.y;
-            if (deltaY > 0) {
-              setY(0);
-            } else {
-              setY(TOP_MAX);
-            }
-          }}
+          onDragEnd={handleDragEnd}
         >
           <Header>
             <TopBar />
@@ -191,12 +198,11 @@ const StoreInfoWindow = ({ store, closeInfoWindow }) => {
 
 const MobileWrapper = styled(motion.div)`
   position: absolute;
-  top: 70%;
-  right: 0;
+  top: 0;
   background-color: #ffffff;
   width: 100%;
-  height: 200%;
-  z-index: 1;
+  height: 900px;
+  z-index: 2;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
