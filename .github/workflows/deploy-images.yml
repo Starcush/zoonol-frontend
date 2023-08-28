@@ -19,8 +19,8 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v4
         with:
-          context: .
-          file: ./Dockerfile
+          context: ./docker
+          file: ./docker/Dockerfile
           platforms: linux/amd64
           push: true
-          tags: starcush/zoonol-frontend:lastest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/zoonol-frontend:lastest
