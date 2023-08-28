@@ -4,11 +4,7 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
-import {
-  RESTAURANT_CATEGORY_SEQ,
-  CAFE_CATEGORY_SEQ,
-  PUB_CATEGORY_SEQ,
-} from '@/constants/constant';
+import { RESTAURANT_CATEGORY_SEQ, CAFE_CATEGORY_SEQ, PUB_CATEGORY_SEQ } from '@/constants/constant';
 import { ButtonSheetCloseIcon, CloseIcon } from '@/icons/icon';
 import ImageLoading from '@/components/common/ImageLoading';
 
@@ -87,11 +83,7 @@ const StoreInfoWindow = ({ store, closeInfoWindow }) => {
               </ZoonolInfo>
               {zoonolFeedUrl && (
                 <ZoonolInfo>
-                  <StoreLink
-                    href={zoonolFeedUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
+                  <StoreLink href={zoonolFeedUrl} target="_blank" rel="noreferrer">
                     {`@${name} in zooonol_`}
                   </StoreLink>
                 </ZoonolInfo>
@@ -119,9 +111,7 @@ const StoreInfoWindow = ({ store, closeInfoWindow }) => {
         )}
         {isZoonolPlace && (
           <InfoUpdateAtWrapper>
-            <InfoUpdateAt>
-              정보 업데이트 시기: {convertedInfoUpdatedAt}
-            </InfoUpdateAt>
+            <InfoUpdateAt>정보 업데이트 시기: {convertedInfoUpdatedAt}</InfoUpdateAt>
             <InfoUpdateAt small>
               * 정보가 변경됐다면{' '}
               <ZoonolInstagramLink

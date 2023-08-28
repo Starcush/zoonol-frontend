@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, createContext } from 'react';
 import styled from 'styled-components';
 import { storeService } from '@/services/api/store';
 import { StoreList } from '@/pages/admin/components/StoreList';
@@ -6,6 +6,8 @@ import { InsertPopup, DeletePopup, UpdatePopup } from '@/pages/admin/popup/Popup
 
 import Image from 'next/image';
 import * as Icon from '@/icons/icon';
+
+export const AdminContext = createContext();
 
 // 검색 -> 추가 -> 삭제 -> 업데이트.
 // 전체 리스트 보기.
@@ -19,6 +21,35 @@ export default function Admin() {
   const [showUpdatePopup, setShowUpdatePopup] = useState(false);
   const [selectStore, setSelectStore] = useState();
 
+  const storeInfoArr = [
+    { id: 'zoonol_place', name: 'zoonolPlace', text: '', dataType: 'int' },
+    { id: 'naver_store_id', name: 'naverStoreId', text: '네이버 스토어 ID', dataType: 'int' },
+    { id: 'name', name: 'name', text: '가게 명', dataType: 'char' },
+    { id: 'phone_number', name: 'phoneNumber', text: '전화번호', dataType: 'char' },
+    { id: 'homepage', name: 'homepage', text: '홈페이지', dataType: 'char' },
+    { id: 'description', name: 'description', text: '가게 설명', dataType: 'text' },
+    { id: 'convenience', name: 'convenience', text: '편의 시설', dataType: 'text' },
+    { id: 'short_address', name: 'shortAddress', text: '짧은 주소', dataType: 'char' },
+    { id: 'address', name: 'address', text: '기존 주소', dataType: 'char' },
+    { id: 'need_cage', name: 'needCage', text: '케이지 여부', dataType: 'int' },
+    { id: 'road_address', name: 'roadAddress', text: '도로명 주소', dataType: 'char' },
+    { id: 'lat', name: 'lat', text: '경도', dataType: 'double' },
+    { id: 'lng', name: 'lng', text: '위도', dataType: 'double' },
+    { id: 'map_url', name: 'mapUrl', text: '지도 URL', dataType: 'char' },
+    { id: 'category_seq', name: 'categorySeq', text: '카테고리 시퀀스', dataType: 'int' },
+    // todo : infoUpdatedAt 삭제 예정
+    // { id: 'info_updated_at', name: 'infoUpdatedAt', text: '', dataType: 'date' },
+    { id: 'off_leash', name: 'offLeash', text: '', dataType: 'int' },
+    { id: 'large_dog_available', name: 'largeDogAvaiable', text: '', dataType: 'int' },
+    { id: 'thumbnail', name: 'thumbnail', text: '', dataType: 'char' },
+    { id: 'additional_info', name: 'additionalInfo', text: '', dataType: 'char' },
+    { id: 'zoonol_feed_url', name: 'zoonolFeedUrl', text: '', dataType: 'char' },
+  ];
+
+  /**
+   * @brief : 스토어 검색
+   * @param {*} keyword : 검색 키워드
+   */
   const fetchGetStoreData = async (keyword) => {
     const { stores } = await storeService.getStoreByName({ keyword });
     setStores(stores);
@@ -39,46 +70,19 @@ export default function Admin() {
     fetchGetStoreData(keyword);
   };
 
-  const fetchInsertStore = async () => {
-    const stroeInfo = inputs;
-    const { stores } = await storeService.insertStore({ storeInfo: stroeInfo });
-    if (stores == 1) {
-      resetStore();
-      closeInsertPopup();
-    }
-  };
-
-  // 삭제
   const resetStore = () => {
     setStores([]);
   };
 
-  const fetchDeleteStore = async (seq) => {
-    const { stores } = await storeService.deleteStoreBySeq({ seq });
-    if (stores == 1) {
-      // 삭제되면 stores 비워서 검색했던 내역 삭제.?
-      resetStore();
-      closeDeletePopup();
-    }
-  };
-
-  const fetchUpdateStore = async (seq) => {
-    const storeInfo = inputs;
-    storeInfo['storeSeq'] = seq;
-
-    const { stores } = await storeService.updateStore({ storeInfo: storeInfo });
-    if (stores == 1) {
-      // 삭제되면 stores 비워서 검색했던 내역 삭제.?
-      resetStore();
-      closeUpdatePopup();
-    }
-  };
-
+  /**
+   * @brief : 스토어 추가
+   */
   // INSERT 기능 및 함수.
   const [inputs, setInputs] = useState({
     zoonolPlace: '',
     naverStoreId: '',
     name: '',
+    needCage: '',
     phoneNumber: '',
     homepage: '',
     description: '',
@@ -103,6 +107,7 @@ export default function Admin() {
       zoonolPlace: '',
       naverStoreId: '',
       name: '',
+      needCage: '',
       phoneNumber: '',
       homepage: '',
       description: '',
@@ -123,10 +128,169 @@ export default function Admin() {
     });
   };
 
+  const fetchInsertStore = async () => {
+    console.log("SHI ::: getLatLngByRoadAddress 222222 ");
+    let storeInfo =  Object.assign({}, inputs);
+    storeInfo = checkStoreData(storeInfo);
+    console.log("SHI fetchInsertStore storeInfo ::: ", storeInfo);
+    // const { stores } = await storeService.insertStore({ storeInfo: storeInfo });
+    // // if (stores == 1) {
+    // if (stores > 0) {
+    //   resetStore();
+    //   closeInsertPopup();
+    // }
+  };
+
+  const checkStoreData = (storeInfo) => {
+    for(const key in storeInfo){
+      const val = storeInfo[key];
+      const dataType = checkStoreDataType(key);
+      if(dataType == 'int' && val == ''){
+        storeInfo[key] = 0;
+      }
+      else if(dataType == 'double' && val == ''){
+        storeInfo[key] = 0;
+      }
+    }
+
+    return storeInfo;
+  }
+
+  const checkStoreDataType = (key) => {
+    let dataType = 'text';
+    switch(key){
+      case 'zoonolPlace':
+      case 'naverStoreId':
+      case 'categorySeq':
+      case 'offLeash':
+      case 'largeDogAvailable':
+      case 'needCage':
+          dataType = 'int';
+        break;
+      case 'name':
+      case 'phoneNumber':
+      case 'homepage':
+      case 'shortAddress':
+      case 'address':
+      case 'roadAddress':
+      case 'mapUrl':
+      case 'thumbnail':
+      case 'additionalInfo':
+      case 'zoonolFeedUrl':
+          dataType = 'char';
+        break;
+      case 'description':
+      case 'convenience':
+          dataType = 'text';
+        break;
+      case 'lat':
+      case 'lng':
+          dataType = 'double';
+        break;
+      // todo : infoUpdatedAt 삭제 예정
+      // case 'infoUpdatedAt':
+      //   dataType = 'date';
+      //   break;
+    }
+    return dataType;
+  }
+  
+  const getLatLngByRoadAddress = async () => {
+    // const address = inputs['address'];
+    // if(address != ''){
+      await window.naver.maps.Service.geocode(
+        {
+          // query: address,
+          // 코코샌드 주소
+          query: '서울특별시 마포구 동교동 148-7 2층',
+          // query: '모르는곳',
+        },
+        (status, response) => {
+          if(status == 200){
+            const addresses = response['v2']['addresses'];
+            if(addresses.length > 0){
+              const addressObj = addresses[0];
+              // 도로명 주소
+              const roadAddress = addressObj['roadAddress'];
+              // 위도
+              const lat = addressObj['x'];
+              // 경도
+              const lng = addressObj['y'];
+              setInputs({
+                ...inputs,
+                roadAddress: roadAddress,
+                lat: lat,
+                lng: lng,
+              });
+              console.log("SHI ::: getLatLngByRoadAddress inputs ::: ", inputs);
+              console.log("SHI ::: getLatLngByRoadAddress 111111 ");
+              fetchInsertStore();
+            }
+          }
+          else{
+
+          }
+        }
+      );
+    // }
+    // else{
+    //   // 주소값이 없으면 위도 경도 0으로 초기화.
+    //   setInputs({
+    //     ...inputs,
+    //     roadAddress: '',
+    //     lat: 0,
+    //     lng: 0,
+    //   });
+    // }
+  };
+
+  const onChangeInputValue = (e) => {
+    const { value, name } = e.target;
+    setInputs({
+      ...inputs,
+      [name]: value,
+    });
+  };
+
+  /**
+   * @brief : 스토어 삭제
+   * @param {*} seq : 삭제 할 SEQ
+   */
+  const fetchDeleteStore = async (seq) => {
+    const { stores } = await storeService.deleteStoreBySeq({ seq });
+    if (stores == 1) {
+      // 삭제되면 stores 비워서 검색했던 내역 삭제.?
+      resetStore();
+      closeDeletePopup();
+    }
+  };
+
+  /**
+   * @brief : 스토어 수정
+   * @param {*} seq : 수정 할 SEQ
+   */
+  const fetchUpdateStore = async (seq) => {
+    let storeInfo =  Object.assign({}, inputs);
+    storeInfo['seq'] = seq;
+    storeInfo = checkStoreData(storeInfo);
+
+    const { stores } = await storeService.updateStore({ storeInfo: storeInfo });
+    if (stores == 1) {
+      // 삭제되면 stores 비워서 검색했던 내역 삭제.?
+      // resetStore();
+      onSearch();
+      closeUpdatePopup();
+    }
+  };
+
   const setInputByStoreInfo = (storeInfo) => {
     setInputs(storeInfo);
   };
 
+  /**
+   * @brief : 팝업
+   */
+  // 스토어 추가 팝업
   const openInsertPopup = () => {
     resetInputs();
     setShowInsertPopup(true);
@@ -136,6 +300,7 @@ export default function Admin() {
     resetInputs();
   };
 
+  // 스토어 삭제 팝업
   const openDeletePopup = (store) => {
     setSelectStore(store);
     setShowDeletePopup(true);
@@ -145,6 +310,7 @@ export default function Admin() {
     setShowDeletePopup(false);
   };
 
+  // 스토어 수정 팝업
   const openUpdatePopup = (store) => {
     setInputByStoreInfo(store);
     setSelectStore(store);
@@ -154,31 +320,6 @@ export default function Admin() {
     setSelectStore();
     setShowUpdatePopup(false);
     resetInputs();
-  };
-
-  const getLatLngByRoadAddress = async () => {
-    // 코코샌드 주소
-    await window.naver.maps.Service.geocode(
-      {
-        query: '서울특별시 마포구 동교동 148-7 2층',
-      },
-      (status, response) => {
-        console.log('SHI status ::::  ', status);
-        console.log('SHI response ::::  ', response);
-        // setInputs({
-        //   ...inputs,
-        //   [name]: value
-        // });
-      }
-    );
-  };
-
-  const onChangeInputValue = (e) => {
-    const { value, name } = e.target;
-    setInputs({
-      ...inputs,
-      [name]: value,
-    });
   };
 
   const ZOONOL_ADMIN_PAGE_TITLE = '주인아 관리하자';
@@ -226,11 +367,14 @@ export default function Admin() {
         </InsertButton>
       </InsertBox>
       {showInsertPopup ? (
-        <InsertPopup
-          onChangeInput={onChangeInputValue}
-          fetchInsertStore={fetchInsertStore}
-          closeInsertPopup={closeInsertPopup}
-        />
+        <AdminContext.Provider value={{ storeInfoArr }}>
+          <InsertPopup
+            onChangeInput={onChangeInputValue}
+            getLatLngByRoadAddress={getLatLngByRoadAddress}
+            fetchInsertStore={fetchInsertStore}
+            closeInsertPopup={closeInsertPopup}
+          />
+        </AdminContext.Provider>
       ) : (
         <></>
       )}
@@ -244,12 +388,14 @@ export default function Admin() {
         <></>
       )}
       {showUpdatePopup ? (
-        <UpdatePopup
-          storeInfo={inputs}
-          onChangeInput={onChangeInputValue}
-          closeUpdatePopup={closeUpdatePopup}
-          fetchUpdateStore={fetchUpdateStore}
-        />
+        <AdminContext.Provider value={{ storeInfoArr }}>
+          <UpdatePopup
+            storeInfo={inputs}
+            onChangeInput={onChangeInputValue}
+            closeUpdatePopup={closeUpdatePopup}
+            fetchUpdateStore={fetchUpdateStore}
+          />
+        </AdminContext.Provider>
       ) : (
         <></>
       )}

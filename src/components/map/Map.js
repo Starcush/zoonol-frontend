@@ -77,12 +77,7 @@ const Map = ({ children, stores }) => {
   return (
     <Wrapper id="map">
       {children}
-      {visibleStore && (
-        <StoreInfoWindow
-          store={visibleStore}
-          closeInfoWindow={closeInfoWindow}
-        />
-      )}
+      {visibleStore && <StoreInfoWindow store={visibleStore} closeInfoWindow={closeInfoWindow} />}
       <UserLocation setUserLocation={setUserLocation} />
     </Wrapper>
   );

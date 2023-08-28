@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { AdminContext } from '..';
+import { useContext } from 'react';
 
 const setPopupTop = (title) => {
   return (
@@ -8,32 +10,12 @@ const setPopupTop = (title) => {
   );
 };
 
-const InsertPopup = ({ onChangeInput, fetchInsertStore, closeInsertPopup }) => {
-  const stroeInfoArr = [
-    { id: 'zoonol_place', name: 'zoonolPlace', text: '' },
-    { id: 'naver_store_id', name: 'naverStoreId', text: '네이버 스토어 ID' },
-    { id: 'name', name: 'name', text: '가게 명' },
-    { id: 'phone_number', name: 'phoneNumber', text: '전화번호' },
-    { id: 'homepage', name: 'homepage', text: '홈페이지' },
-    { id: 'description', name: 'description', text: '가게 설명' },
-    { id: 'convenience', name: 'convenience', text: '편의 시설' },
-    { id: 'short_address', name: 'shortAddress', text: '짧은 주소' },
-    { id: 'address', name: 'address', text: '기존 주소' },
-    { id: 'road_address', name: 'roadAddress', text: '도로명 주소' },
-    { id: 'lat', name: 'lat', text: '경도' },
-    { id: 'lng', name: 'lng', text: '위도' },
-    { id: 'map_url', name: 'mapUrl', text: '지도 URL' },
-    { id: 'category_seq', name: 'categorySeq', text: '카테고리 시퀀스' },
-    { id: 'info_updated_at', name: 'infoUpdatedAt', text: '' },
-    { id: 'off_leash', name: 'offLeash', text: '' },
-    { id: 'large_dog_available', name: 'largeDogAvaiable', text: '' },
-    { id: 'thumbnail', name: 'thumbnail', text: '' },
-    { id: 'additional_info', name: 'additionalInfo', text: '' },
-    { id: 'zoonol_feed_url', name: 'zoonolFeedUrl', text: '' },
-  ];
+const InsertPopup = ({ onChangeInput, getLatLngByRoadAddress, fetchInsertStore, closeInsertPopup }) => {
+  const { storeInfoArr } = useContext(AdminContext);
 
   const onClickInsertButton = (e) => {
-    fetchInsertStore();
+    getLatLngByRoadAddress();
+    // fetchInsertStore();
   };
 
   const onClickCloseButton = (e) => {
@@ -43,8 +25,8 @@ const InsertPopup = ({ onChangeInput, fetchInsertStore, closeInsertPopup }) => {
   const getStoreListObj = () => {
     const insertChild = [];
 
-    for (const key in stroeInfoArr) {
-      const storeObj = stroeInfoArr[key];
+    for (const key in storeInfoArr) {
+      const storeObj = storeInfoArr[key];
       insertChild.push(getStoreInputObj(storeObj, key));
     }
     return insertChild;
@@ -162,28 +144,7 @@ const DeletePopup = ({ storeInfo, closeDeletePopup, fetchDeleteStore }) => {
 };
 
 const UpdatePopup = ({ storeInfo, onChangeInput, fetchUpdateStore, closeUpdatePopup }) => {
-  const stroeInfoArr = [
-    { id: 'zoonol_place', name: 'zoonolPlace', text: '' },
-    { id: 'naver_store_id', name: 'naverStoreId', text: '네이버 스토어 ID' },
-    { id: 'name', name: 'name', text: '가게 명' },
-    { id: 'phone_number', name: 'phoneNumber', text: '전화번호' },
-    { id: 'homepage', name: 'homepage', text: '홈페이지' },
-    { id: 'description', name: 'description', text: '가게 설명' },
-    { id: 'convenience', name: 'convenience', text: '편의 시설' },
-    { id: 'short_address', name: 'shortAddress', text: '짧은 주소' },
-    { id: 'address', name: 'address', text: '기존 주소' },
-    { id: 'road_address', name: 'roadAddress', text: '도로명 주소' },
-    { id: 'lat', name: 'lat', text: '경도' },
-    { id: 'lng', name: 'lng', text: '위도' },
-    { id: 'map_url', name: 'mapUrl', text: '지도 URL' },
-    { id: 'category_seq', name: 'categorySeq', text: '카테고리 시퀀스' },
-    { id: 'info_updated_at', name: 'infoUpdatedAt', text: '' },
-    { id: 'off_leash', name: 'offLeash', text: '' },
-    { id: 'large_dog_available', name: 'largeDogAvailable', text: '' },
-    { id: 'thumbnail', name: 'thumbnail', text: '' },
-    { id: 'additional_info', name: 'additionalInfo', text: '' },
-    { id: 'zoonol_feed_url', name: 'zoonolFeedUrl', text: '' },
-  ];
+  const { storeInfoArr } = useContext(AdminContext);
 
   const onClickUpdateButton = (e) => {
     if (storeInfo != null) {
@@ -198,8 +159,8 @@ const UpdatePopup = ({ storeInfo, onChangeInput, fetchUpdateStore, closeUpdatePo
   const getStoreListObj = () => {
     const insertChild = [];
 
-    for (const key in stroeInfoArr) {
-      const storeObj = stroeInfoArr[key];
+    for (const key in storeInfoArr) {
+      const storeObj = storeInfoArr[key];
       insertChild.push(getStoreInputObj(storeObj, key));
     }
     return insertChild;

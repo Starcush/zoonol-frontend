@@ -17,7 +17,8 @@ const storeService = {
     const { data } = await defaultAxios.post(
       '/store/insert-store',
       {
-        ...storeInfo,
+        // ...storeInfo,
+        ...queryParams['storeInfo'],
       },
       {}
     );
@@ -35,7 +36,8 @@ const storeService = {
     const { data } = await defaultAxios.post(
       '/store/update-store',
       {
-        params: queryParams,
+        // params: queryParams,
+        ...queryParams['storeInfo'],
       },
       {}
     );

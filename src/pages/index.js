@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import styled from 'styled-components';
 import { storeService } from '@/services/api/store';
-// import Map from '@/components/map/Map';
+import Map from '@/components/map/Map';
 
 export default function Home() {
   const [stores, setStores] = useState([]);
@@ -39,8 +39,8 @@ export default function Home() {
         {isLoading ? (
           <LoadingWrapper>반려견 동반 장소 지도 로딩중...</LoadingWrapper>
         ) : (
-          // <Map stores={stores} />
-          <></>
+          <Map stores={stores} />
+          // <></>
         )}
       </main>
     </>
