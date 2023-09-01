@@ -79,7 +79,7 @@ const StoreInfoWindow = ({ store, closeInfoWindow }) => {
     return (
       <Fragment>
         <StoreInfoWrapper>
-          <Name>{name}</Name>
+          <Name>{name} *</Name>
           <Category>{category}</Category>
         </StoreInfoWrapper>
         {isZoonolPlace && (
@@ -210,7 +210,8 @@ const MobileWrapper = styled(motion.div)`
 
 const DesktopWrapper = styled.div`
   padding: 20px;
-  background-color: white;
+  /* background-color: white; */
+  background-color: green;
   border-radius: 6px;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
   position: fixed;
