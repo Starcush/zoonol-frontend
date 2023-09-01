@@ -22,10 +22,10 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          build-args: |
-            "NEXT_PUBLIC_NAVER_MAP_ID=${{ secrets.NEXT_PUBLIC_NAVER_MAP_ID}}"
-            "NEXT_PUBLIC_PRODUCTION_ENDPOINT={{ secrets.NEXT_PUBLIC_PRODUCTION_ENDPOINT}}"
-            "NEXT_PUBLIC_GA_ID={{ secrets.NEXT_PUBLIC_GA_ID }}"
+          secrets: |
+            "map_id=${{ secrets.NEXT_PUBLIC_NAVER_MAP_ID}}"
+            "production_endpoint={{ secrets.NEXT_PUBLIC_PRODUCTION_ENDPOINT}}"
+            "ga_id={{ secrets.NEXT_PUBLIC_GA_ID }}"
           file: ./docker/Dockerfile
           platforms: linux/amd64
           push: true

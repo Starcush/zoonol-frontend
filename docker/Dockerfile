@@ -6,12 +6,13 @@ WORKDIR /usr/app
 
 COPY . .
 RUN yarn install
-RUN --mount=type=secret,id=NEXT_PUBLIC_NAVER_MAP_ID \
-  export NEXT_PUBLIC_NAVER_MAP_ID=$(cat /run/secrets/NEXT_PUBLIC_NAVER_MAP_ID) \
-  --mount=type=secret,id=NEXT_PUBLIC_PRODUCTION_ENDPOINT \
-  export NEXT_PUBLIC_PRODUCTION_ENDPOINT=$(cat /run/secrets/NEXT_PUBLIC_PRODUCTION_ENDPOINT) \
-  --mount=type=secret,id=NEXT_PUBLIC_GA_ID \
-  export NEXT_PUBLIC_GA_ID=$(cat /run/secrets/NEXT_PUBLIC_GA_ID) yarn build
+RUN --mount=type=secret,id=map_id \
+  --mount=type=secret,id=production_endpoint \
+  --mount=type=secret,id=ga_id \
+  cat /run/secrets/map_id \
+  cat /run/secrets/production_endpoint \
+  cat /run/secrets/ga_id \
+  yarn build
 ENV NODE_ENV production
 
 CMD [ "yarn", "start" ]
