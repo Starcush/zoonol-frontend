@@ -10,12 +10,15 @@ const setPopupTop = (title) => {
   );
 };
 
-const InsertPopup = ({ onChangeInput, getLatLngByRoadAddress, fetchInsertStore, closeInsertPopup }) => {
+const InsertPopup = ({
+  onChangeInput,
+  getLatLngByRoadAddress,
+  closeInsertPopup,
+}) => {
   const { storeInfoArr } = useContext(AdminContext);
 
   const onClickInsertButton = (e) => {
     getLatLngByRoadAddress();
-    // fetchInsertStore();
   };
 
   const onClickCloseButton = (e) => {
@@ -88,10 +91,15 @@ const InsertPopup = ({ onChangeInput, getLatLngByRoadAddress, fetchInsertStore, 
   );
 };
 
-const DeletePopup = ({ storeInfo, closeDeletePopup, fetchDeleteStore }) => {
+const DeletePopup = ({ 
+  storeInfo, 
+  closeDeletePopup, 
+  fetchDeleteStore, 
+}) => {
   const onClickDeleteButton = (e) => {
     if (storeInfo != null) {
-      fetchDeleteStore(storeInfo.seq);
+      const seq = storeInfo['seq'];
+      fetchDeleteStore({ seq });
     }
   };
   const onClickCloseButton = (e) => {
@@ -143,12 +151,26 @@ const DeletePopup = ({ storeInfo, closeDeletePopup, fetchDeleteStore }) => {
   );
 };
 
-const UpdatePopup = ({ storeInfo, onChangeInput, fetchUpdateStore, closeUpdatePopup }) => {
+const UpdatePopup = ({ 
+  storeInfo, 
+  onChangeInput, 
+  fetchUpdateStore, 
+  updateLatLngByRoadAddress, 
+  checkUpdatedAddress, 
+  closeUpdatePopup, 
+}) => {
   const { storeInfoArr } = useContext(AdminContext);
 
   const onClickUpdateButton = (e) => {
     if (storeInfo != null) {
-      fetchUpdateStore(storeInfo.seq);
+      const seq = storeInfo['seq'];
+      const isUpdatedAddress = checkUpdatedAddress();
+      if(isUpdatedAddress){
+        updateLatLngByRoadAddress({ seq, isUpdatedAddress });
+      }
+      else{
+        fetchUpdateStore({ seq, isUpdatedAddress });
+      }
     }
   };
 

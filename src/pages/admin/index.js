@@ -32,9 +32,9 @@ export default function Admin() {
     { id: 'short_address', name: 'shortAddress', text: '짧은 주소', dataType: 'char' },
     { id: 'address', name: 'address', text: '기존 주소', dataType: 'char' },
     { id: 'need_cage', name: 'needCage', text: '케이지 여부', dataType: 'int' },
-    { id: 'road_address', name: 'roadAddress', text: '도로명 주소', dataType: 'char' },
-    { id: 'lat', name: 'lat', text: '경도', dataType: 'double' },
-    { id: 'lng', name: 'lng', text: '위도', dataType: 'double' },
+    // { id: 'road_address', name: 'roadAddress', text: '도로명 주소', dataType: 'char' },
+    // { id: 'lat', name: 'lat', text: '경도', dataType: 'double' },
+    // { id: 'lng', name: 'lng', text: '위도', dataType: 'double' },
     { id: 'map_url', name: 'mapUrl', text: '지도 URL', dataType: 'char' },
     { id: 'category_seq', name: 'categorySeq', text: '카테고리 시퀀스', dataType: 'int' },
     // todo : infoUpdatedAt 삭제 예정
@@ -128,44 +128,41 @@ export default function Admin() {
     });
   };
 
-  const fetchInsertStore = async () => {
-    console.log("SHI ::: getLatLngByRoadAddress 222222 ");
-    let storeInfo =  Object.assign({}, inputs);
+  const fetchInsertStore = async ({ roadAddress, lat, lng }) => {
+    let storeInfo = Object.assign({}, { ...inputs, roadAddress, lat, lng });
     storeInfo = checkStoreData(storeInfo);
-    console.log("SHI fetchInsertStore storeInfo ::: ", storeInfo);
-    // const { stores } = await storeService.insertStore({ storeInfo: storeInfo });
-    // // if (stores == 1) {
-    // if (stores > 0) {
-    //   resetStore();
-    //   closeInsertPopup();
-    // }
+    const { stores } = await storeService.insertStore({ storeInfo: storeInfo });
+    // if (stores == 1) {
+    if (stores > 0) {
+      resetStore();
+      closeInsertPopup();
+    }
   };
 
   const checkStoreData = (storeInfo) => {
-    for(const key in storeInfo){
+    for (const key in storeInfo) {
       const val = storeInfo[key];
       const dataType = checkStoreDataType(key);
-      if(dataType == 'int' && val == ''){
+      if (dataType == 'int' && val == '') {
         storeInfo[key] = 0;
-      }
-      else if(dataType == 'double' && val == ''){
+      } else if (dataType == 'double' && val == '') {
         storeInfo[key] = 0;
       }
     }
 
     return storeInfo;
-  }
+  };
 
   const checkStoreDataType = (key) => {
     let dataType = 'text';
-    switch(key){
+    switch (key) {
       case 'zoonolPlace':
       case 'naverStoreId':
       case 'categorySeq':
       case 'offLeash':
       case 'largeDogAvailable':
       case 'needCage':
-          dataType = 'int';
+        dataType = 'int';
         break;
       case 'name':
       case 'phoneNumber':
@@ -177,15 +174,15 @@ export default function Admin() {
       case 'thumbnail':
       case 'additionalInfo':
       case 'zoonolFeedUrl':
-          dataType = 'char';
+        dataType = 'char';
         break;
       case 'description':
       case 'convenience':
-          dataType = 'text';
+        dataType = 'text';
         break;
       case 'lat':
       case 'lng':
-          dataType = 'double';
+        dataType = 'double';
         break;
       // todo : infoUpdatedAt 삭제 예정
       // case 'infoUpdatedAt':
@@ -193,56 +190,57 @@ export default function Admin() {
       //   break;
     }
     return dataType;
-  }
-  
+  };
+
   const getLatLngByRoadAddress = async () => {
-    // const address = inputs['address'];
-    // if(address != ''){
+    const address = inputs['address'];
+    // 도로명 주소
+    let roadAddress = '';
+    // 위도
+    let lat = 0;
+    // 경도
+    let lng = 0;
+    if(address != ''){
       await window.naver.maps.Service.geocode(
         {
-          // query: address,
+          query: address,
           // 코코샌드 주소
-          query: '서울특별시 마포구 동교동 148-7 2층',
-          // query: '모르는곳',
+          // query: '서울특별시 마포구 동교동 148-7 2층',
         },
         (status, response) => {
-          if(status == 200){
+          if (status == 200) {
             const addresses = response['v2']['addresses'];
-            if(addresses.length > 0){
+            if (addresses.length > 0) {
               const addressObj = addresses[0];
-              // 도로명 주소
-              const roadAddress = addressObj['roadAddress'];
-              // 위도
-              const lat = addressObj['x'];
-              // 경도
-              const lng = addressObj['y'];
-              setInputs({
-                ...inputs,
-                roadAddress: roadAddress,
-                lat: lat,
-                lng: lng,
-              });
-              console.log("SHI ::: getLatLngByRoadAddress inputs ::: ", inputs);
-              console.log("SHI ::: getLatLngByRoadAddress 111111 ");
-              fetchInsertStore();
+              roadAddress = addressObj['roadAddress'];
+              lat = addressObj['x'];
+              lng = addressObj['y'];
+              setAddressReqInsert({ roadAddress, lat, lng });
             }
-          }
-          else{
-
+            else{
+              setAddressReqInsert({ roadAddress, lat, lng });
+            }
+          } else {
+            console.log("SHI getLatLngByRoadAddress ::: ", status, response);
           }
         }
       );
-    // }
-    // else{
-    //   // 주소값이 없으면 위도 경도 0으로 초기화.
-    //   setInputs({
-    //     ...inputs,
-    //     roadAddress: '',
-    //     lat: 0,
-    //     lng: 0,
-    //   });
-    // }
+    }
+    else{
+      setAddressReqInsert({ roadAddress, lat, lng });
+    }
   };
+
+  const setAddressReqInsert = ({ roadAddress, lat, lng }) => {
+    // 주소값이 없으면 위도 경도 0으로 초기화.
+    setInputs({
+      ...inputs,
+      roadAddress: roadAddress,
+      lat: lat,
+      lng: lng,
+    });
+    fetchInsertStore({ roadAddress, lat, lng });
+  }
 
   const onChangeInputValue = (e) => {
     const { value, name } = e.target;
@@ -256,7 +254,7 @@ export default function Admin() {
    * @brief : 스토어 삭제
    * @param {*} seq : 삭제 할 SEQ
    */
-  const fetchDeleteStore = async (seq) => {
+  const fetchDeleteStore = async ({ seq }) => {
     const { stores } = await storeService.deleteStoreBySeq({ seq });
     if (stores == 1) {
       // 삭제되면 stores 비워서 검색했던 내역 삭제.?
@@ -269,11 +267,13 @@ export default function Admin() {
    * @brief : 스토어 수정
    * @param {*} seq : 수정 할 SEQ
    */
-  const fetchUpdateStore = async (seq) => {
-    let storeInfo =  Object.assign({}, inputs);
-    storeInfo['seq'] = seq;
+  const fetchUpdateStore = async ({ isUpdatedAddress, seq, roadAddress, lat, lng }) => {
+    let storeInfo = Object.assign({}, { ...inputs, seq });
+    if(isUpdatedAddress){
+      storeInfo = Object.assign({}, { ...inputs, seq, roadAddress, lat, lng });
+    }
     storeInfo = checkStoreData(storeInfo);
-
+    console.log("SHI fetchUpdateStore ::: ", storeInfo);
     const { stores } = await storeService.updateStore({ storeInfo: storeInfo });
     if (stores == 1) {
       // 삭제되면 stores 비워서 검색했던 내역 삭제.?
@@ -282,6 +282,63 @@ export default function Admin() {
       closeUpdatePopup();
     }
   };
+
+  const checkUpdatedAddress = () => {
+    const prevAddress = selectStore['address'];
+    const curAddress = inputs['address'];
+    if(curAddress !== prevAddress){
+      return true;
+    }
+    return false;
+  }
+
+  const updateLatLngByRoadAddress = async ({ isUpdatedAddress, seq }) => {
+    const address = inputs['address'];
+    // 도로명 주소
+    let roadAddress = '';
+    // 위도
+    let lat = 0;
+    // 경도
+    let lng = 0;
+    if(address != ''){
+      await window.naver.maps.Service.geocode(
+        {
+          query: address,
+        },
+        (status, response) => {
+          if (status == 200) {
+            const addresses = response['v2']['addresses'];
+            if (addresses.length > 0) {
+              const addressObj = addresses[0];
+              roadAddress = addressObj['roadAddress'];
+              lat = addressObj['x'];
+              lng = addressObj['y'];
+              setAddressReqUpdate({ isUpdatedAddress, seq, roadAddress, lat, lng });
+            }
+            else{
+              setAddressReqUpdate({ isUpdatedAddress, seq, roadAddress, lat, lng });
+            }
+          } else {
+            console.log("SHI updateLatLngByRoadAddress ::: ", status, response);
+          }
+        }
+      );
+    }
+    else{
+      setAddressReqUpdate({ isUpdatedAddress, seq, roadAddress, lat, lng });
+    }
+  };
+
+  const setAddressReqUpdate = ({ isUpdatedAddress, seq, roadAddress, lat, lng }) => {
+    // 주소값이 없으면 위도 경도 0으로 초기화.
+    setInputs({
+      ...inputs,
+      roadAddress: roadAddress,
+      lat: lat,
+      lng: lng,
+    });
+    fetchUpdateStore({ isUpdatedAddress, seq, roadAddress, lat, lng });
+  }
 
   const setInputByStoreInfo = (storeInfo) => {
     setInputs(storeInfo);
@@ -371,7 +428,6 @@ export default function Admin() {
           <InsertPopup
             onChangeInput={onChangeInputValue}
             getLatLngByRoadAddress={getLatLngByRoadAddress}
-            fetchInsertStore={fetchInsertStore}
             closeInsertPopup={closeInsertPopup}
           />
         </AdminContext.Provider>
@@ -392,6 +448,8 @@ export default function Admin() {
           <UpdatePopup
             storeInfo={inputs}
             onChangeInput={onChangeInputValue}
+            updateLatLngByRoadAddress={updateLatLngByRoadAddress}
+            checkUpdatedAddress={checkUpdatedAddress}
             closeUpdatePopup={closeUpdatePopup}
             fetchUpdateStore={fetchUpdateStore}
           />

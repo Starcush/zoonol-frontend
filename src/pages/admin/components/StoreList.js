@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import styled from 'styled-components';
 
 const StoreList = ({ stores, openDeletePopup, openUpdatePopup }) => {
@@ -22,8 +23,8 @@ const StoreList = ({ stores, openDeletePopup, openUpdatePopup }) => {
     const storeItemObj = (
       <StoreItem key={store.seq}>
         <StoreItemLabelBox>
-          <StoreItemLabel>{index}</StoreItemLabel>
-          <StoreItemBlock />
+          {/* <StoreItemLabel>{index}</StoreItemLabel> */}
+          {/* <StoreItemBlock /> */}
           <StoreItemLabel>{store.name}</StoreItemLabel>
           <StoreItemBlock />
           <StoreItemLabel>{store.address}</StoreItemLabel>
@@ -49,7 +50,20 @@ const StoreList = ({ stores, openDeletePopup, openUpdatePopup }) => {
 
   return (
     <StoreListWrap>
-      <StoreListBox>{getStoreList()}</StoreListBox>
+      <StoreListBox>
+        <StoreItem>
+          <StoreItemLabelBox>
+            {/* <StoreItemLabel>인덱스</StoreItemLabel> */}
+            {/* <StoreItemBlock /> */}
+            <StoreItemLabel>이름</StoreItemLabel>
+            <StoreItemBlock />
+            <StoreItemLabel>주소</StoreItemLabel>
+            <Fragment/>
+            <Fragment/>
+          </StoreItemLabelBox>
+        </StoreItem>
+        {getStoreList()}
+      </StoreListBox>
     </StoreListWrap>
   );
 };
@@ -70,6 +84,7 @@ const StoreListBox = styled.div`
 `;
 
 const StoreItem = styled.div`
+  width: 100%;
   height: 40px;
   display: flex;
   align-items: center;
@@ -84,10 +99,11 @@ const StoreItemLabelBox = styled.div`
 `;
 
 const StoreItemLabel = styled.span`
+  display: block;
+  flex-grow: 1;
   height: 100%;
   font-size: 18px;
   line-height: 40px;
-  display: block;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
