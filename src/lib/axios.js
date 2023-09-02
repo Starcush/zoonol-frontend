@@ -8,6 +8,11 @@ const RESPONST_STATUS_CODE_INTERNAL = 500;
 const env = process.env.NODE_ENV;
 const isDev = env === 'development';
 
+console.log(
+  'process.env.NEXT_PUBLIC_PRODUCTION_ENDPOINT: ',
+  process.env.NEXT_PUBLIC_PRODUCTION_ENDPOINT
+);
+
 export const defaultAxios = Axios.create({
   baseURL: isDev
     ? process.env.NEXT_PUBLIC_LOCAL_ENDPOINT
