@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { AdminContext } from '..';
+import { AdminContext } from '@/pages/admin';
 import { useContext } from 'react';
 
 const setPopupTop = (title) => {
@@ -10,11 +10,7 @@ const setPopupTop = (title) => {
   );
 };
 
-const InsertPopup = ({
-  onChangeInput,
-  getLatLngByRoadAddress,
-  closeInsertPopup,
-}) => {
+const InsertPopup = ({ onChangeInput, getLatLngByRoadAddress, closeInsertPopup }) => {
   const { storeInfoArr } = useContext(AdminContext);
 
   const onClickInsertButton = (e) => {
@@ -42,9 +38,7 @@ const InsertPopup = ({
         <StoreItemInput
           id={storeObj.id}
           name={storeObj.name}
-          onChange={(e) => {
-            onChangeInput(e);
-          }}
+          onChange={onChangeInput}
           placeholder={storeObj.text}
         />
       </StoreItem>
@@ -61,16 +55,12 @@ const InsertPopup = ({
       <PopupBottom>
         <ButtonBox>
           <PopupButton
-            onClick={(e) => {
-              onClickInsertButton(e);
-            }}
+            onClick={onClickInsertButton}
           >
             {btnText}
           </PopupButton>
           <PopupButton
-            onClick={(e) => {
-              onClickCloseButton(e);
-            }}
+            onClick={onClickCloseButton}
           >
             닫기
           </PopupButton>
@@ -91,11 +81,7 @@ const InsertPopup = ({
   );
 };
 
-const DeletePopup = ({ 
-  storeInfo, 
-  closeDeletePopup, 
-  fetchDeleteStore, 
-}) => {
+const DeletePopup = ({ storeInfo, closeDeletePopup, fetchDeleteStore }) => {
   const onClickDeleteButton = (e) => {
     if (storeInfo != null) {
       const seq = storeInfo['seq'];
@@ -121,16 +107,12 @@ const DeletePopup = ({
       <PopupBottom>
         <ButtonBox>
           <PopupButton
-            onClick={(e) => {
-              onClickDeleteButton(e);
-            }}
+            onClick={onClickDeleteButton}
           >
             {btnText}
           </PopupButton>
           <PopupButton
-            onClick={(e) => {
-              onClickCloseButton(e);
-            }}
+            onClick={onClickCloseButton}
           >
             닫기
           </PopupButton>
@@ -151,13 +133,13 @@ const DeletePopup = ({
   );
 };
 
-const UpdatePopup = ({ 
-  storeInfo, 
-  onChangeInput, 
-  fetchUpdateStore, 
-  updateLatLngByRoadAddress, 
-  checkUpdatedAddress, 
-  closeUpdatePopup, 
+const UpdatePopup = ({
+  storeInfo,
+  onChangeInput,
+  fetchUpdateStore,
+  updateLatLngByRoadAddress,
+  checkUpdatedAddress,
+  closeUpdatePopup,
 }) => {
   const { storeInfoArr } = useContext(AdminContext);
 
@@ -165,10 +147,9 @@ const UpdatePopup = ({
     if (storeInfo != null) {
       const seq = storeInfo['seq'];
       const isUpdatedAddress = checkUpdatedAddress();
-      if(isUpdatedAddress){
+      if (isUpdatedAddress) {
         updateLatLngByRoadAddress({ seq, isUpdatedAddress });
-      }
-      else{
+      } else {
         fetchUpdateStore({ seq, isUpdatedAddress });
       }
     }
@@ -195,9 +176,7 @@ const UpdatePopup = ({
         <StoreItemInput
           id={storeObj.id}
           name={storeObj.name}
-          onChange={(e) => {
-            onChangeInput(e);
-          }}
+          onChange={onChangeInput}
           placeholder={storeObj.text}
           value={storeInfo[storeObj.id]}
         />
@@ -215,16 +194,12 @@ const UpdatePopup = ({
       <PopupBottom>
         <ButtonBox>
           <PopupButton
-            onClick={(e) => {
-              onClickUpdateButton(e);
-            }}
+            onClick={onClickUpdateButton}
           >
             {btnText}
           </PopupButton>
           <PopupButton
-            onClick={(e) => {
-              onClickCloseButton(e);
-            }}
+            onClick={onClickCloseButton}
           >
             닫기
           </PopupButton>

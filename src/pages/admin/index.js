@@ -132,7 +132,6 @@ export default function Admin() {
     let storeInfo = Object.assign({}, { ...inputs, roadAddress, lat, lng });
     storeInfo = checkStoreData(storeInfo);
     const { stores } = await storeService.insertStore({ storeInfo: storeInfo });
-    // if (stores == 1) {
     if (stores > 0) {
       resetStore();
       closeInsertPopup();
@@ -200,7 +199,7 @@ export default function Admin() {
     let lat = 0;
     // 경도
     let lng = 0;
-    if(address != ''){
+    if (address != '') {
       await window.naver.maps.Service.geocode(
         {
           query: address,
@@ -216,17 +215,15 @@ export default function Admin() {
               lat = addressObj['x'];
               lng = addressObj['y'];
               setAddressReqInsert({ roadAddress, lat, lng });
-            }
-            else{
+            } else {
               setAddressReqInsert({ roadAddress, lat, lng });
             }
           } else {
-            console.log("SHI getLatLngByRoadAddress ::: ", status, response);
+            console.log('SHI getLatLngByRoadAddress ::: ', status, response);
           }
         }
       );
-    }
-    else{
+    } else {
       setAddressReqInsert({ roadAddress, lat, lng });
     }
   };
@@ -235,12 +232,12 @@ export default function Admin() {
     // 주소값이 없으면 위도 경도 0으로 초기화.
     setInputs({
       ...inputs,
-      roadAddress: roadAddress,
-      lat: lat,
-      lng: lng,
+      roadAddress,
+      lat,
+      lng,
     });
     fetchInsertStore({ roadAddress, lat, lng });
-  }
+  };
 
   const onChangeInputValue = (e) => {
     const { value, name } = e.target;
@@ -269,11 +266,11 @@ export default function Admin() {
    */
   const fetchUpdateStore = async ({ isUpdatedAddress, seq, roadAddress, lat, lng }) => {
     let storeInfo = Object.assign({}, { ...inputs, seq });
-    if(isUpdatedAddress){
+    if (isUpdatedAddress) {
       storeInfo = Object.assign({}, { ...inputs, seq, roadAddress, lat, lng });
     }
     storeInfo = checkStoreData(storeInfo);
-    console.log("SHI fetchUpdateStore ::: ", storeInfo);
+    console.log('SHI fetchUpdateStore ::: ', storeInfo);
     const { stores } = await storeService.updateStore({ storeInfo: storeInfo });
     if (stores == 1) {
       // 삭제되면 stores 비워서 검색했던 내역 삭제.?
@@ -286,11 +283,11 @@ export default function Admin() {
   const checkUpdatedAddress = () => {
     const prevAddress = selectStore['address'];
     const curAddress = inputs['address'];
-    if(curAddress !== prevAddress){
+    if (curAddress !== prevAddress) {
       return true;
     }
     return false;
-  }
+  };
 
   const updateLatLngByRoadAddress = async ({ isUpdatedAddress, seq }) => {
     const address = inputs['address'];
@@ -300,7 +297,7 @@ export default function Admin() {
     let lat = 0;
     // 경도
     let lng = 0;
-    if(address != ''){
+    if (address != '') {
       await window.naver.maps.Service.geocode(
         {
           query: address,
@@ -314,17 +311,15 @@ export default function Admin() {
               lat = addressObj['x'];
               lng = addressObj['y'];
               setAddressReqUpdate({ isUpdatedAddress, seq, roadAddress, lat, lng });
-            }
-            else{
+            } else {
               setAddressReqUpdate({ isUpdatedAddress, seq, roadAddress, lat, lng });
             }
           } else {
-            console.log("SHI updateLatLngByRoadAddress ::: ", status, response);
+            console.log('SHI updateLatLngByRoadAddress ::: ', status, response);
           }
         }
       );
-    }
-    else{
+    } else {
       setAddressReqUpdate({ isUpdatedAddress, seq, roadAddress, lat, lng });
     }
   };
@@ -333,12 +328,12 @@ export default function Admin() {
     // 주소값이 없으면 위도 경도 0으로 초기화.
     setInputs({
       ...inputs,
-      roadAddress: roadAddress,
-      lat: lat,
-      lng: lng,
+      roadAddress,
+      lat,
+      lng,
     });
     fetchUpdateStore({ isUpdatedAddress, seq, roadAddress, lat, lng });
-  }
+  };
 
   const setInputByStoreInfo = (storeInfo) => {
     setInputs(storeInfo);
@@ -389,18 +384,12 @@ export default function Admin() {
       </ZoonolLogoBox>
       <SearchBox>
         <SearchInput
-          onChange={(e) => {
-            onChangeSearchInput(e);
-          }}
-          onKeyDown={(e) => {
-            onKeyPressSearchInput(e);
-          }}
+          onChange={onChangeSearchInput}
+          onKeyDown={onKeyPressSearchInput}
           placeholder="찾을 가게 이름을 입력해주세요."
         />
         <SearchButton
-          onClick={(e) => {
-            onSearch(e);
-          }}
+          onClick={onSearch}
         >
           검색
         </SearchButton>
@@ -416,9 +405,7 @@ export default function Admin() {
       )}
       <InsertBox>
         <InsertButton
-          onClick={(e) => {
-            openInsertPopup(e);
-          }}
+          onClick={openInsertPopup}
         >
           스토어 추가
         </InsertButton>

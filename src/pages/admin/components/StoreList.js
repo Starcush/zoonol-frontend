@@ -23,8 +23,6 @@ const StoreList = ({ stores, openDeletePopup, openUpdatePopup }) => {
     const storeItemObj = (
       <StoreItem key={store.seq}>
         <StoreItemLabelBox>
-          {/* <StoreItemLabel>{index}</StoreItemLabel> */}
-          {/* <StoreItemBlock /> */}
           <StoreItemLabel>{store.name}</StoreItemLabel>
           <StoreItemBlock />
           <StoreItemLabel>{store.address}</StoreItemLabel>
@@ -53,13 +51,11 @@ const StoreList = ({ stores, openDeletePopup, openUpdatePopup }) => {
       <StoreListBox>
         <StoreItem>
           <StoreItemLabelBox>
-            {/* <StoreItemLabel>인덱스</StoreItemLabel> */}
-            {/* <StoreItemBlock /> */}
             <StoreItemLabel>이름</StoreItemLabel>
             <StoreItemBlock />
             <StoreItemLabel>주소</StoreItemLabel>
-            <Fragment/>
-            <Fragment/>
+            <Fragment />
+            <Fragment />
           </StoreItemLabelBox>
         </StoreItem>
         {getStoreList()}
