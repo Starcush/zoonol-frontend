@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { AdminContext } from '@/pages/admin';
 import { useContext } from 'react';
 
-const setPopupTop = (title) => {
+const PopupHeader = ({ title }) => {
   return (
     <PopupTop>
       <PopupTitle>{title}</PopupTitle>
@@ -46,24 +46,16 @@ const InsertPopup = ({ onChangeInput, getLatLngByRoadAddress, closeInsertPopup }
     return insertInputObj;
   };
 
-  const setPopupMiddle = () => {
-    return <PopupMiddle>{getStoreListObj(onChangeInput)}</PopupMiddle>;
+  const PopupBody = () => {
+    return <PopupMiddle>{getStoreListObj()}</PopupMiddle>;
   };
 
-  const setPopupButtom = (btnText) => {
+  const PopupFooter = ({ btnText }) => {
     return (
       <PopupBottom>
         <ButtonBox>
-          <PopupButton
-            onClick={onClickInsertButton}
-          >
-            {btnText}
-          </PopupButton>
-          <PopupButton
-            onClick={onClickCloseButton}
-          >
-            닫기
-          </PopupButton>
+          <PopupButton onClick={onClickInsertButton}>{btnText}</PopupButton>
+          <PopupButton onClick={onClickCloseButton}>닫기</PopupButton>
         </ButtonBox>
       </PopupBottom>
     );
@@ -73,9 +65,11 @@ const InsertPopup = ({ onChangeInput, getLatLngByRoadAddress, closeInsertPopup }
     <PopupWrapper>
       <PopupBg />
       <PopupContainer>
-        {setPopupTop('스토어 추가')}
-        {setPopupMiddle()}
-        {setPopupButtom('추가')}
+        <PopupHeader title='스토어 추가'/>
+        {PopupBody()}
+        {/* todo : PopupBody 컴포넌트로 변경시 input 리렌더링 오류 수정 필요 */}
+        {/* <PopupBody /> */}
+        <PopupFooter btnText='추가'/>
       </PopupContainer>
     </PopupWrapper>
   );
@@ -92,7 +86,7 @@ const DeletePopup = ({ storeInfo, closeDeletePopup, fetchDeleteStore }) => {
     closeDeletePopup();
   };
 
-  const setPopupMiddle = (storeInfo) => {
+  const PopupBody = ({ storeInfo }) => {
     return (
       <PopupMiddle>
         <PopupText>가게 이름 : {storeInfo.name}</PopupText>
@@ -102,20 +96,12 @@ const DeletePopup = ({ storeInfo, closeDeletePopup, fetchDeleteStore }) => {
     );
   };
 
-  const setPopupButtom = (btnText) => {
+  const PopupFooter = ({ btnText }) => {
     return (
       <PopupBottom>
         <ButtonBox>
-          <PopupButton
-            onClick={onClickDeleteButton}
-          >
-            {btnText}
-          </PopupButton>
-          <PopupButton
-            onClick={onClickCloseButton}
-          >
-            닫기
-          </PopupButton>
+          <PopupButton onClick={onClickDeleteButton}>{btnText}</PopupButton>
+          <PopupButton onClick={onClickCloseButton}>닫기</PopupButton>
         </ButtonBox>
       </PopupBottom>
     );
@@ -125,9 +111,9 @@ const DeletePopup = ({ storeInfo, closeDeletePopup, fetchDeleteStore }) => {
     <PopupWrapper>
       <PopupBg />
       <PopupContainer>
-        {setPopupTop('스토어 삭제')}
-        {setPopupMiddle(storeInfo)}
-        {setPopupButtom('삭제')}
+        <PopupHeader title='스토어 삭제'/>
+        <PopupBody storeInfo={ storeInfo } />
+        <PopupFooter btnText='삭제'/>
       </PopupContainer>
     </PopupWrapper>
   );
@@ -161,6 +147,7 @@ const UpdatePopup = ({
 
   const getStoreListObj = () => {
     const insertChild = [];
+    console.log(storeInfo);
 
     for (const key in storeInfoArr) {
       const storeObj = storeInfoArr[key];
@@ -185,24 +172,16 @@ const UpdatePopup = ({
     return insertInputObj;
   };
 
-  const setPopupMiddle = () => {
-    return <PopupMiddle>{getStoreListObj(onChangeInput)}</PopupMiddle>;
+  const PopupBody = () => {
+    return <PopupMiddle>{getStoreListObj()}</PopupMiddle>;
   };
 
-  const setPopupButtom = (btnText) => {
+  const PopupFooter = ({ btnText }) => {
     return (
       <PopupBottom>
         <ButtonBox>
-          <PopupButton
-            onClick={onClickUpdateButton}
-          >
-            {btnText}
-          </PopupButton>
-          <PopupButton
-            onClick={onClickCloseButton}
-          >
-            닫기
-          </PopupButton>
+          <PopupButton onClick={onClickUpdateButton}>{btnText}</PopupButton>
+          <PopupButton onClick={onClickCloseButton}>닫기</PopupButton>
         </ButtonBox>
       </PopupBottom>
     );
@@ -212,9 +191,11 @@ const UpdatePopup = ({
     <PopupWrapper>
       <PopupBg />
       <PopupContainer>
-        {setPopupTop('스토어 수정')}
-        {setPopupMiddle()}
-        {setPopupButtom('수정')}
+        <PopupHeader title='스토어 수정'/>
+        {PopupBody()}
+        {/* todo : PopupBody 컴포넌트로 변경시 input 리렌더링 오류 수정 필요 */}
+        {/* <PopupBody /> */}
+        <PopupFooter btnText='수정'/>
       </PopupContainer>
     </PopupWrapper>
   );

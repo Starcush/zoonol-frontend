@@ -253,7 +253,7 @@ export default function Admin() {
    */
   const fetchDeleteStore = async ({ seq }) => {
     const { stores } = await storeService.deleteStoreBySeq({ seq });
-    if (stores == 1) {
+    if (stores > 0) {
       // 삭제되면 stores 비워서 검색했던 내역 삭제.?
       resetStore();
       closeDeletePopup();
@@ -270,9 +270,8 @@ export default function Admin() {
       storeInfo = Object.assign({}, { ...inputs, seq, roadAddress, lat, lng });
     }
     storeInfo = checkStoreData(storeInfo);
-    console.log('SHI fetchUpdateStore ::: ', storeInfo);
     const { stores } = await storeService.updateStore({ storeInfo: storeInfo });
-    if (stores == 1) {
+    if (stores > 0) {
       // 삭제되면 stores 비워서 검색했던 내역 삭제.?
       // resetStore();
       onSearch();
@@ -388,11 +387,7 @@ export default function Admin() {
           onKeyDown={onKeyPressSearchInput}
           placeholder="찾을 가게 이름을 입력해주세요."
         />
-        <SearchButton
-          onClick={onSearch}
-        >
-          검색
-        </SearchButton>
+        <SearchButton onClick={onSearch}>검색</SearchButton>
       </SearchBox>
       {stores.length > 0 ? (
         <StoreList
@@ -404,11 +399,7 @@ export default function Admin() {
         <></>
       )}
       <InsertBox>
-        <InsertButton
-          onClick={openInsertPopup}
-        >
-          스토어 추가
-        </InsertButton>
+        <InsertButton onClick={openInsertPopup}>스토어 추가</InsertButton>
       </InsertBox>
       {showInsertPopup ? (
         <AdminContext.Provider value={{ storeInfoArr }}>
