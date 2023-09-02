@@ -1,19 +1,8 @@
 FROM node:18.17-alpine3.18
 
-# ARG NEXT_PUBLIC_NAVER_MAP_ID=$NEXT_PUBLIC_NAVER_MAP_ID
-# ARG NEXT_PUBLIC_PRODUCTION_ENDPOINT=$NEXT_PUBLIC_PRODUCTION_ENDPOINT
-# ARG NEXT_PUBLIC_GA_ID=$NEXT_PUBLIC_GA_ID
-
 ENV TZ Asia/Seoul
 
 WORKDIR /usr/app
-
-# --mount=type=secret,id=NEXT_PUBLIC_NAVER_MAP_ID \
-#   --mount=type=secret,id=NEXT_PUBLIC_PRODUCTION_ENDPOINT \
-#   --mount=type=secret,id=NEXT_PUBLIC_GA_ID \
-#   export NEXT_PUBLIC_NAVER_MAP_ID=$(cat /run/secrets/NEXT_PUBLIC_NAVER_MAP_ID) && \
-#   export NEXT_PUBLIC_PRODUCTION_ENDPOINT=$(cat /run/secrets/NEXT_PUBLIC_PRODUCTION_ENDPOINT) && \
-#   export NEXT_PUBLIC_GA_ID=$(cat /run/secrets/NEXT_PUBLIC_GA_ID) && \
 
 COPY . .
 RUN yarn install

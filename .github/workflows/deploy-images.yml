@@ -26,15 +26,8 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push
         uses: docker/build-push-action@v4
-        # env: NEXT_PUBLIC_NAVER_MAP_ID=${{ secrets.NEXT_PUBLIC_NAVER_MAP_ID}}
-        #   NEXT_PUBLIC_PRODUCTION_ENDPOINT={{ secrets.NEXT_PUBLIC_PRODUCTION_ENDPOINT}}
-        #   NEXT_PUBLIC_GA_ID={{ secrets.NEXT_PUBLIC_GA_ID }}
         with:
           context: .
-          # secrets: |
-          #   "NEXT_PUBLIC_NAVER_MAP_ID=${{ secrets.NEXT_PUBLIC_NAVER_MAP_ID}}"
-          #   "NEXT_PUBLIC_PRODUCTION_ENDPOINT={{ secrets.NEXT_PUBLIC_PRODUCTION_ENDPOINT}}"
-          #   "NEXT_PUBLIC_GA_ID={{ secrets.NEXT_PUBLIC_GA_ID }}"
           file: ./docker/Dockerfile
           platforms: linux/amd64
           push: true
