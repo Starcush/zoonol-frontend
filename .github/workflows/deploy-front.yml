@@ -1,0 +1,45 @@
+name: Build & Deploy
+
+on:
+  workflow_dispatch:
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Generate dotenv
+        run: |
+          echo NEXT_PUBLIC_NAVER_MAP_ID=${{ secrets.NEXT_PUBLIC_NAVER_MAP_ID }} >> .env
+          echo NEXT_PUBLIC_PRODUCTION_ENDPOINT=${{ secrets.NEXT_PUBLIC_PRODUCTION_ENDPOINT }} >> .env
+          echo NEXT_PUBLIC_GA_ID=${{ secrets.NEXT_PUBLIC_GA_ID }} >> .env
+          cat .env
+      - name: Deploy Front to DO droplet
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          key: ${{ secrets.SSH_KEY }}
+          username: ${{ secrets.SSH_USERNAME }}
+          script: |
+            cd repo/
+            cd zoonol-web/
+            cd zoonol-frontend/
+            yarn install
+            yarn build
+            pm2 restart frontend
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./docker/Dockerfile
+          platforms: linux/amd64
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/zoonol-backend:latest
