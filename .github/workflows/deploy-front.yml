@@ -14,12 +14,12 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           username: ${{ secrets.SSH_USERNAME }}
           script: |
-            git stash
-            git checkout ${{ github.ref_name }}
-            git pull origin ${{ github.ref_name }}
             cd repo/
             cd zoonol-web/
             cd zoonol-frontend/
+            git stash
+            git checkout ${{ github.ref_name }}
+            git pull origin ${{ github.ref_name }}
             yarn install
             yarn build
             pm2 restart frontend
