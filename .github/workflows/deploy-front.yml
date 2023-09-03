@@ -7,14 +7,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Generate dotenv
-        run: |
-          echo NEXT_PUBLIC_NAVER_MAP_ID=${{ secrets.NEXT_PUBLIC_NAVER_MAP_ID }} >> .env
-          echo NEXT_PUBLIC_PRODUCTION_ENDPOINT=${{ secrets.NEXT_PUBLIC_PRODUCTION_ENDPOINT }} >> .env
-          echo NEXT_PUBLIC_GA_ID=${{ secrets.NEXT_PUBLIC_GA_ID }} >> .env
-          cat .env
       - name: Deploy Front to DO droplet
         uses: appleboy/ssh-action@v1.0.0
         with:
@@ -22,6 +14,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           username: ${{ secrets.SSH_USERNAME }}
           script: |
+            git pull origin ${{ github.ref_name }}
             cd repo/
             cd zoonol-web/
             cd zoonol-frontend/
