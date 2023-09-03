@@ -79,7 +79,7 @@ const StoreInfoWindow = ({ store, closeInfoWindow }) => {
     return (
       <Fragment>
         <StoreInfoWrapper>
-          <Name>{name} *</Name>
+          <Name>{name}</Name>
           <Category>{category}</Category>
         </StoreInfoWrapper>
         {isZoonolPlace && (
