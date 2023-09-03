@@ -21,7 +21,6 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           key: ${{ secrets.SSH_KEY }}
           username: ${{ secrets.SSH_USERNAME }}
-          passphrase: ${{ secrets.PASSWORD }}
           script: |
             cd repo/
             cd zoonol-web/
