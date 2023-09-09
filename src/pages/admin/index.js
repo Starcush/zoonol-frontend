@@ -241,6 +241,7 @@ export default function Admin() {
 
   const onChangeInputValue = (e) => {
     const { value, name } = e.target;
+    console.log("SHI onChangeInputValue");
     setInputs({
       ...inputs,
       [name]: value,

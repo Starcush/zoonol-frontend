@@ -10,6 +10,34 @@ const PopupHeader = ({ title }) => {
   );
 };
 
+const getStoreListObj = ({ storeInfoArr, onChangeInput, storeInfo }) => {
+  const insertChild = [];
+
+  for (const key in storeInfoArr) {
+    const storeObj = storeInfoArr[key];
+    insertChild.push(getStoreInputObj({ storeObj, onChangeInput, storeInfo }));
+  }
+  return insertChild;
+};
+
+const getStoreInputObj = ({ storeObj, onChangeInput, storeInfo }) => {
+  console.log("SHI storeInfo ::: ", storeInfo);
+  const insertInputObj = (
+    <StoreItem key={storeObj.id}>
+      <StoreItemLable htmlFor={storeObj.id}>{storeObj.id}</StoreItemLable>
+      <StoreItemInput
+        id={storeObj.id}
+        name={storeObj.name}
+        onChange={onChangeInput}
+        placeholder={storeObj.text}
+        // value={storeInfo[storeObj.id]}
+        defaultValue={storeInfo ? storeInfo[storeObj.id] : ''}
+      />
+    </StoreItem>
+  );
+  return insertInputObj;
+};
+
 const InsertPopup = ({ onChangeInput, getLatLngByRoadAddress, closeInsertPopup }) => {
   const { storeInfoArr } = useContext(AdminContext);
 
@@ -21,33 +49,8 @@ const InsertPopup = ({ onChangeInput, getLatLngByRoadAddress, closeInsertPopup }
     closeInsertPopup();
   };
 
-  const getStoreListObj = () => {
-    const insertChild = [];
-
-    for (const key in storeInfoArr) {
-      const storeObj = storeInfoArr[key];
-      insertChild.push(getStoreInputObj(storeObj, key));
-    }
-    return insertChild;
-  };
-
-  const getStoreInputObj = (storeObj, index) => {
-    const insertInputObj = (
-      <StoreItem key={storeObj.id}>
-        <StoreItemLable htmlFor={storeObj.id}>{storeObj.id}</StoreItemLable>
-        <StoreItemInput
-          id={storeObj.id}
-          name={storeObj.name}
-          onChange={onChangeInput}
-          placeholder={storeObj.text}
-        />
-      </StoreItem>
-    );
-    return insertInputObj;
-  };
-
   const PopupBody = () => {
-    return <PopupMiddle>{getStoreListObj()}</PopupMiddle>;
+    return <PopupMiddle>{getStoreListObj({ storeInfoArr, onChangeInput })}</PopupMiddle>;
   };
 
   const PopupFooter = ({ btnText }) => {
@@ -65,11 +68,11 @@ const InsertPopup = ({ onChangeInput, getLatLngByRoadAddress, closeInsertPopup }
     <PopupWrapper>
       <PopupBg />
       <PopupContainer>
-        <PopupHeader title='스토어 추가'/>
+        <PopupHeader title="스토어 추가" />
         {PopupBody()}
         {/* todo : PopupBody 컴포넌트로 변경시 input 리렌더링 오류 수정 필요 */}
         {/* <PopupBody /> */}
-        <PopupFooter btnText='추가'/>
+        <PopupFooter btnText="추가" />
       </PopupContainer>
     </PopupWrapper>
   );
@@ -111,9 +114,9 @@ const DeletePopup = ({ storeInfo, closeDeletePopup, fetchDeleteStore }) => {
     <PopupWrapper>
       <PopupBg />
       <PopupContainer>
-        <PopupHeader title='스토어 삭제'/>
-        <PopupBody storeInfo={ storeInfo } />
-        <PopupFooter btnText='삭제'/>
+        <PopupHeader title="스토어 삭제" />
+        <PopupBody storeInfo={storeInfo} />
+        <PopupFooter btnText="삭제" />
       </PopupContainer>
     </PopupWrapper>
   );
@@ -145,35 +148,34 @@ const UpdatePopup = ({
     closeUpdatePopup();
   };
 
-  const getStoreListObj = () => {
-    const insertChild = [];
-    console.log(storeInfo);
+  // const getStoreListObj = ({ storeInfoArr }) => {
+  //   const insertChild = [];
 
-    for (const key in storeInfoArr) {
-      const storeObj = storeInfoArr[key];
-      insertChild.push(getStoreInputObj(storeObj, key));
-    }
-    return insertChild;
-  };
+  //   for (const key in storeInfoArr) {
+  //     const storeObj = storeInfoArr[key];
+  //     insertChild.push(getStoreInputObj({ storeObj }));
+  //   }
+  //   return insertChild;
+  // };
 
-  const getStoreInputObj = (storeObj, index) => {
-    const insertInputObj = (
-      <StoreItem key={storeObj.id}>
-        <StoreItemLable htmlFor={storeObj.id}>{storeObj.id}</StoreItemLable>
-        <StoreItemInput
-          id={storeObj.id}
-          name={storeObj.name}
-          onChange={onChangeInput}
-          placeholder={storeObj.text}
-          value={storeInfo[storeObj.id]}
-        />
-      </StoreItem>
-    );
-    return insertInputObj;
-  };
+  // const getStoreInputObj = ({ storeObj }) => {
+  //   const insertInputObj = (
+  //     <StoreItem key={storeObj.id}>
+  //       <StoreItemLable htmlFor={storeObj.id}>{storeObj.id}</StoreItemLable>
+  //       <StoreItemInput
+  //         id={storeObj.id}
+  //         name={storeObj.name}
+  //         onChange={onChangeInput}
+  //         placeholder={storeObj.text}
+  //         value={storeInfo[storeObj.id]}
+  //       />
+  //     </StoreItem>
+  //   );
+  //   return insertInputObj;
+  // };
 
   const PopupBody = () => {
-    return <PopupMiddle>{getStoreListObj()}</PopupMiddle>;
+    return <PopupMiddle>{getStoreListObj({ storeInfoArr, onChangeInput, storeInfo })}</PopupMiddle>;
   };
 
   const PopupFooter = ({ btnText }) => {
@@ -191,11 +193,11 @@ const UpdatePopup = ({
     <PopupWrapper>
       <PopupBg />
       <PopupContainer>
-        <PopupHeader title='스토어 수정'/>
+        <PopupHeader title="스토어 수정" />
         {PopupBody()}
         {/* todo : PopupBody 컴포넌트로 변경시 input 리렌더링 오류 수정 필요 */}
         {/* <PopupBody /> */}
-        <PopupFooter btnText='수정'/>
+        <PopupFooter btnText="수정" />
       </PopupContainer>
     </PopupWrapper>
   );
