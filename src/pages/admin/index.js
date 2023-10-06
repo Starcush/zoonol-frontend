@@ -1,9 +1,9 @@
 import { useState, createContext } from 'react';
 import styled from 'styled-components';
 import { storeService } from '@/services/api/store';
-import { StoreList } from '@/pages/admin/components/StoreList';
+import { StoreList } from '@/components/admin/StoreList';
 import { InsertPopup, DeletePopup, UpdatePopup } from '@/pages/admin/popup/Popup';
-
+import { checkStoreDataType } from '@/common/Validate';
 import Image from 'next/image';
 import * as Icon from '@/icons/icon';
 
@@ -74,57 +74,79 @@ export default function Admin() {
     setStores([]);
   };
 
+  // setInput 변수 선언
+  const zoonolPlace= '';
+  const naverStoreId= '';
+  const name= '';
+  const needCage= '';
+  const phoneNumber= '';
+  const homepage= '';
+  const description= '';
+  const convenience= '';
+  const shortAddress= '';
+  const address= '';
+  const roadAddress= '';
+  const lat= '';
+  const lng= '';
+  const mapUrl= '';
+  const categorySeq= '';
+  const offLeash= '';
+  const largeDogAvailable= '';
+  const thumbnail= '';
+  const additionalInfo= '';
+  const zoonolFeedUrl= '';
+
   /**
    * @brief : 스토어 추가
    */
   // INSERT 기능 및 함수.
   const [inputs, setInputs] = useState({
-    zoonolPlace: '',
-    naverStoreId: '',
-    name: '',
-    needCage: '',
-    phoneNumber: '',
-    homepage: '',
-    description: '',
-    convenience: '',
-    shortAddress: '',
-    address: '',
-    roadAddress: '',
-    lat: '',
-    lng: '',
-    mapUrl: '',
-    categorySeq: '',
+    zoonolPlace,
+    naverStoreId,
+    name,
+    needCage,
+    phoneNumber,
+    homepage,
+    description,
+    convenience,
+    shortAddress,
+    address,
+    roadAddress,
+    lat,
+    lng,
+    mapUrl,
+    categorySeq,
     // infoUpdatedAt: '', todo: 이거 지우기로 함
-    offLeash: '',
-    largeDogAvailable: '',
-    thumbnail: '',
-    additionalInfo: '',
-    zoonolFeedUrl: '',
+    offLeash,
+    largeDogAvailable,
+    thumbnail,
+    additionalInfo,
+    zoonolFeedUrl,
   });
 
   const resetInputs = () => {
     setInputs({
-      zoonolPlace: '',
-      naverStoreId: '',
-      name: '',
-      needCage: '',
-      phoneNumber: '',
-      homepage: '',
-      description: '',
-      convenience: '',
-      shortAddress: '',
-      address: '',
-      roadAddress: '',
-      lat: '',
-      lng: '',
-      mapUrl: '',
-      categorySeq: '',
+      zoonolPlace,
+      naverStoreId,
+      name,
+      needCage,
+      phoneNumber,
+      homepage,
+      description,
+      convenience,
+      shortAddress,
+      address,
+      roadAddress,
+      lat,
+      lng,
+      mapUrl,
+      categorySeq,
       // infoUpdatedAt: '', todo: 이거 지우기로 함
-      offLeash: '',
-      largeDogAvailable: '',
-      thumbnail: '',
-      additionalInfo: '',
-      zoonolFeedUrl: '',
+      offLeash,
+      largeDogAvailable,
+      thumbnail,
+      additionalInfo,
+      zoonolFeedUrl,
     });
   };
 
@@ -150,45 +172,6 @@ export default function Admin() {
     }
 
     return storeInfo;
-  };
-
-  const checkStoreDataType = (key) => {
-    let dataType = 'text';
-    switch (key) {
-      case 'zoonolPlace':
-      case 'naverStoreId':
-      case 'categorySeq':
-      case 'offLeash':
-      case 'largeDogAvailable':
-      case 'needCage':
-        dataType = 'int';
-        break;
-      case 'name':
-      case 'phoneNumber':
-      case 'homepage':
-      case 'shortAddress':
-      case 'address':
-      case 'roadAddress':
-      case 'mapUrl':
-      case 'thumbnail':
-      case 'additionalInfo':
-      case 'zoonolFeedUrl':
-        dataType = 'char';
-        break;
-      case 'description':
-      case 'convenience':
-        dataType = 'text';
-        break;
-      case 'lat':
-      case 'lng':
-        dataType = 'double';
-        break;
-      // todo : infoUpdatedAt 삭제 예정
-      // case 'infoUpdatedAt':
-      //   dataType = 'date';
-      //   break;
-    }
-    return dataType;
   };
 
   const getLatLngByRoadAddress = async () => {
@@ -241,7 +224,7 @@ export default function Admin() {
 
   const onChangeInputValue = (e) => {
     const { value, name } = e.target;
-    console.log("SHI onChangeInputValue");
+    console.log('SHI onChangeInputValue');
     setInputs({
       ...inputs,
       [name]: value,

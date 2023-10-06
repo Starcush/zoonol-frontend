@@ -20,8 +20,11 @@ const getStoreListObj = ({ storeInfoArr, onChangeInput, storeInfo }) => {
   return insertChild;
 };
 
+const PopupBody = ({ storeInfoArr, onChangeInput, storeInfo }) => {
+  return <PopupMiddle>{getStoreListObj({ storeInfoArr, onChangeInput, storeInfo })}</PopupMiddle>;
+};
+
 const getStoreInputObj = ({ storeObj, onChangeInput, storeInfo }) => {
-  console.log("SHI storeInfo ::: ", storeInfo);
   const insertInputObj = (
     <StoreItem key={storeObj.id}>
       <StoreItemLable htmlFor={storeObj.id}>{storeObj.id}</StoreItemLable>
@@ -49,10 +52,6 @@ const InsertPopup = ({ onChangeInput, getLatLngByRoadAddress, closeInsertPopup }
     closeInsertPopup();
   };
 
-  const PopupBody = () => {
-    return <PopupMiddle>{getStoreListObj({ storeInfoArr, onChangeInput })}</PopupMiddle>;
-  };
-
   const PopupFooter = ({ btnText }) => {
     return (
       <PopupBottom>
@@ -69,9 +68,7 @@ const InsertPopup = ({ onChangeInput, getLatLngByRoadAddress, closeInsertPopup }
       <PopupBg />
       <PopupContainer>
         <PopupHeader title="스토어 추가" />
-        {PopupBody()}
-        {/* todo : PopupBody 컴포넌트로 변경시 input 리렌더링 오류 수정 필요 */}
-        {/* <PopupBody /> */}
+        <PopupBody storeInfoArr={storeInfoArr} onChangeInput={onChangeInput}/>
         <PopupFooter btnText="추가" />
       </PopupContainer>
     </PopupWrapper>
@@ -148,36 +145,6 @@ const UpdatePopup = ({
     closeUpdatePopup();
   };
 
-  // const getStoreListObj = ({ storeInfoArr }) => {
-  //   const insertChild = [];
-
-  //   for (const key in storeInfoArr) {
-  //     const storeObj = storeInfoArr[key];
-  //     insertChild.push(getStoreInputObj({ storeObj }));
-  //   }
-  //   return insertChild;
-  // };
-
-  // const getStoreInputObj = ({ storeObj }) => {
-  //   const insertInputObj = (
-  //     <StoreItem key={storeObj.id}>
-  //       <StoreItemLable htmlFor={storeObj.id}>{storeObj.id}</StoreItemLable>
-  //       <StoreItemInput
-  //         id={storeObj.id}
-  //         name={storeObj.name}
-  //         onChange={onChangeInput}
-  //         placeholder={storeObj.text}
-  //         value={storeInfo[storeObj.id]}
-  //       />
-  //     </StoreItem>
-  //   );
-  //   return insertInputObj;
-  // };
-
-  const PopupBody = () => {
-    return <PopupMiddle>{getStoreListObj({ storeInfoArr, onChangeInput, storeInfo })}</PopupMiddle>;
-  };
-
   const PopupFooter = ({ btnText }) => {
     return (
       <PopupBottom>
@@ -194,9 +161,7 @@ const UpdatePopup = ({
       <PopupBg />
       <PopupContainer>
         <PopupHeader title="스토어 수정" />
-        {PopupBody()}
-        {/* todo : PopupBody 컴포넌트로 변경시 input 리렌더링 오류 수정 필요 */}
-        {/* <PopupBody /> */}
+        <PopupBody storeInfoArr={storeInfoArr} onChangeInput={onChangeInput} storeInfo={storeInfo}/>
         <PopupFooter btnText="수정" />
       </PopupContainer>
     </PopupWrapper>
