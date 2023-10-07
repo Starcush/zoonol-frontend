@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Button, Input } from 'antd';
 import { storeService } from '@/services/api/store';
 import { StoreList } from '@/components/admin/StoreList';
-import { InsertPopup, DeletePopup, UpdatePopup } from '@/pages/admin/popup/Popup';
+import { InsertPopup, DeletePopup, UpdatePopup } from '@/components/admin/Popup';
 import Image from 'next/image';
 import * as Icon from '@/icons/icon';
 
