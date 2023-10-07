@@ -50,10 +50,7 @@ function makeMarkerClustering(naver) {
     this._mapRelations = null;
     this._markerRelations = [];
 
-    this.setOptions(
-      naver.maps.Util.extend({}, this.DEFAULT_OPTIONS, options),
-      true
-    );
+    this.setOptions(naver.maps.Util.extend({}, this.DEFAULT_OPTIONS, options), true);
     this.setMap(options.map || null);
   };
 
@@ -681,10 +678,7 @@ function makeMarkerClustering(naver) {
      */
     _calcBounds: function (position) {
       var map = this._markerClusterer.getMap(),
-        bounds = new naver.maps.LatLngBounds(
-          position.clone(),
-          position.clone()
-        ),
+        bounds = new naver.maps.LatLngBounds(position.clone(), position.clone()),
         mapBounds = map.getBounds(),
         proj = map.getProjection(),
         map_max_px = proj.fromCoordToOffset(mapBounds.getNE()),
@@ -700,12 +694,8 @@ function makeMarkerClustering(naver) {
         max_px_y = Math.max(map_max_px.y, max_px.y),
         min_px_x = Math.max(map_min_px.x, min_px.x),
         min_px_y = Math.min(map_min_px.y, min_px.y),
-        newMax = proj.fromOffsetToCoord(
-          new naver.maps.Point(max_px_x, max_px_y)
-        ),
-        newMin = proj.fromOffsetToCoord(
-          new naver.maps.Point(min_px_x, min_px_y)
-        );
+        newMax = proj.fromOffsetToCoord(new naver.maps.Point(max_px_x, max_px_y)),
+        newMin = proj.fromOffsetToCoord(new naver.maps.Point(min_px_x, min_px_y));
 
       return new naver.maps.LatLngBounds(newMin, newMax);
     },

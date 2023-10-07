@@ -1,10 +1,6 @@
 import { useState } from 'react';
 import Script from 'next/script';
-import {
-  Hydrate,
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query';
+import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Layout from '@/components/Layout';
 import '@/styles/globals.css';
 import '@/styles/fonts.css';
@@ -19,6 +15,10 @@ export default function App({ Component, pageProps }) {
         <Script
           strategy="beforeInteractive"
           src={`https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.NEXT_PUBLIC_NAVER_MAP_ID}`}
+        />
+        <Script
+          strategy="beforeInteractive"
+          src={`https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.NEXT_PUBLIC_NAVER_MAP_ID}&submodules=geocoder`}
         />
         {process.env.NODE_ENV !== 'development' && (
           <>
