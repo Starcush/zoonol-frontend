@@ -1,16 +1,14 @@
-import { Fragment } from 'react';
 import styled from 'styled-components';
+import { Table, Button } from 'antd';
+import * as column from '@/constants/column';
+import {
+  RESTAURANT_CATEGORY_SEQ,
+  CAFE_CATEGORY_SEQ,
+  PUB_CATEGORY_SEQ,
+  LIBRARY_CATEGORY_SEQ,
+} from '@/constants/constant';
 
 const StoreList = ({ stores, openDeletePopup, openUpdatePopup }) => {
-  const getStoreList = () => {
-    const storeItemArr = [];
-    for (const index in stores) {
-      const store = stores[index];
-      storeItemArr.push(getStoreItemObj(index, store));
-    }
-    return storeItemArr;
-  };
-
   const onClickDeleteItem = (e, store) => {
     openDeletePopup(store);
   };
@@ -19,100 +17,106 @@ const StoreList = ({ stores, openDeletePopup, openUpdatePopup }) => {
     openUpdatePopup(store);
   };
 
-  const getStoreItemObj = (index, store) => {
-    const storeItemObj = (
-      <StoreItem key={store.seq}>
-        <StoreItemLabelBox>
-          <StoreItemLabel>{store.name}</StoreItemLabel>
-          <StoreItemBlock />
-          <StoreItemLabel>{store.address}</StoreItemLabel>
-        </StoreItemLabelBox>
-        <StoreItemButton
-          onClick={(e) => {
-            onClickDeleteItem(e, store);
-          }}
-        >
-          삭제
-        </StoreItemButton>
-        <StoreItemButton
-          onClick={(e) => {
-            onClickUpdateItem(e, store);
-          }}
-        >
-          수정
-        </StoreItemButton>
-      </StoreItem>
+  const DeleteButton = ({ store }) => {
+    return (
+      <Button
+        style={{ marginRight: 10 }}
+        type="primary"
+        onClick={(e) => {
+          onClickDeleteItem(e, store);
+        }}
+      >
+        삭제
+      </Button>
     );
-    return storeItemObj;
   };
 
+  const UpdateButton = ({ store }) => {
+    return (
+      <Button
+        onClick={(e) => {
+          onClickUpdateItem(e, store);
+        }}
+      >
+        수정
+      </Button>
+    );
+  };
+
+  const columns = [
+    {
+      title: '번호',
+      dataIndex: column.STORE_COLUMN_SEQ,
+      key: column.STORE_COLUMN_SEQ,
+    },
+    {
+      title: '카테고리 번호',
+      dataIndex: column.STORE_COLUMN_CATEGORY_SEQ,
+      key: column.STORE_COLUMN_CATEGORY_SEQ,
+      render: (text) => {
+        switch (text) {
+          case RESTAURANT_CATEGORY_SEQ:
+            return '식당';
+          case CAFE_CATEGORY_SEQ:
+            return '카페';
+          case PUB_CATEGORY_SEQ:
+            return '호프';
+          case LIBRARY_CATEGORY_SEQ:
+            return '서점';
+        }
+      },
+    },
+    {
+      title: '네이버 번호',
+      dataIndex: column.STORE_COLUMN_NAVER_STORE_ID,
+      key: column.STORE_COLUMN_NAVER_STORE_ID,
+    },
+    {
+      title: '이름',
+      dataIndex: column.STORE_COLUMN_NAME,
+      key: column.STORE_COLUMN_NAME,
+    },
+    {
+      title: '주소',
+      dataIndex: column.STORE_COLUMN_ADDRESS,
+      key: column.STORE_COLUMN_ADDRESS,
+    },
+    {
+      title: '주놀 장소',
+      dataIndex: column.STORE_COLUMN_ZOONOL_PLACE,
+      key: column.STORE_COLUMN_ZOONOL_PLACE,
+      render: (text) => {
+        if (text) {
+          return 'yes';
+        } else {
+          return 'no';
+        }
+      },
+    },
+    {
+      title: '',
+      dataIndex: 'action',
+      key: 'action',
+      render: (text, record) => {
+        return (
+          <ButtonWrapper>
+            <DeleteButton store={record} />
+            <UpdateButton store={record} />
+          </ButtonWrapper>
+        );
+      },
+    },
+  ];
+
   return (
-    <StoreListWrap>
-      <StoreListBox>
-        <StoreItem>
-          <StoreItemLabelBox>
-            <StoreItemLabel>이름</StoreItemLabel>
-            <StoreItemBlock />
-            <StoreItemLabel>주소</StoreItemLabel>
-            <Fragment />
-            <Fragment />
-          </StoreItemLabelBox>
-        </StoreItem>
-        {getStoreList()}
-      </StoreListBox>
-    </StoreListWrap>
+    <Wrapper>
+      <Table columns={columns} dataSource={stores} />
+    </Wrapper>
   );
 };
 
 export { StoreList };
 
-const StoreListWrap = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
+const Wrapper = styled.div``;
 
-const StoreListBox = styled.div`
-  width: 80%;
-  height: 600px;
-  overflow: scroll;
-  overflow-x: hidden;
-`;
-
-const StoreItem = styled.div`
-  width: 100%;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 10px 0;
-`;
-
-const StoreItemLabelBox = styled.div`
-  display: flex;
-  width: 80%;
-  height: 100%;
-`;
-
-const StoreItemLabel = styled.span`
-  display: block;
-  flex-grow: 1;
-  height: 100%;
-  font-size: 18px;
-  line-height: 40px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
-
-const StoreItemBlock = styled.span`
-  margin: 0 5px;
-`;
-
-const StoreItemButton = styled.button`
-  height: 100%;
-  padding: 0 5px;
-  font-size: 15px;
-  box-sizing: border-box;
-  margin: 0 20px;
-`;
+const ButtonWrapper = styled.div``;

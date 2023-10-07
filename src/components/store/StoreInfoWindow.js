@@ -4,7 +4,12 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
-import { RESTAURANT_CATEGORY_SEQ, CAFE_CATEGORY_SEQ, PUB_CATEGORY_SEQ } from '@/constants/constant';
+import {
+  RESTAURANT_CATEGORY_SEQ,
+  CAFE_CATEGORY_SEQ,
+  PUB_CATEGORY_SEQ,
+  LIBRARY_CATEGORY_SEQ,
+} from '@/constants/constant';
 import { ButtonSheetCloseIcon, CloseIcon } from '@/icons/icon';
 import ImageLoading from '@/components/common/ImageLoading';
 
@@ -56,6 +61,9 @@ const StoreInfoWindow = ({ store, closeInfoWindow }) => {
       break;
     case PUB_CATEGORY_SEQ:
       category = '호프';
+      break;
+    case LIBRARY_CATEGORY_SEQ:
+      category = '서점';
       break;
   }
 

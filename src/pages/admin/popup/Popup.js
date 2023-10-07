@@ -1,240 +1,287 @@
 import styled from 'styled-components';
-import { AdminContext } from '@/pages/admin';
-import { useContext } from 'react';
+import { Modal, Form, Input, Checkbox, Button, Select } from 'antd';
+import * as column from '@/constants/column';
 
-const PopupHeader = ({ title }) => {
+const getNaverInfoFromUrl = (naverUrl) => {
+  const url = new URL(naverUrl);
+  const urlParams = url.searchParams;
+  const lat = urlParams.get('lat');
+  const lng = urlParams.get('lng');
+  const pathname = url.pathname.split('/');
+  const naverStoreId = pathname[pathname.length - 1];
+
+  return { naverStoreId, lat, lng };
+};
+
+const StoreInfoForm = ({ form, defaultValue, type }) => {
+  const isInsert = type === 'insert';
   return (
-    <PopupTop>
-      <PopupTitle>{title}</PopupTitle>
-    </PopupTop>
+    <Form form={form}>
+      <FormBody>
+        <FormStoreInfoBody>
+          <Form.Item
+            label={column.STORE_COLUMN_CATEGORY_SEQ}
+            name={column.STORE_COLUMN_CATEGORY_SEQ}
+            initialValue={defaultValue?.[column.STORE_COLUMN_CATEGORY_SEQ]}
+            rules={[{ required: isInsert, message: '새 장소 입력시 카테고리를 입력해주세요.' }]}
+          >
+            <Select
+              defaultValue={1}
+              options={[
+                { value: 1, label: '식당' },
+                { value: 2, label: '카페' },
+                { value: 7, label: '호프' },
+                { value: 8, label: '서점' },
+              ]}
+            />
+          </Form.Item>
+          <Form.Item
+            label={column.STORE_COLUMN_NAME}
+            name={column.STORE_COLUMN_NAME}
+            initialValue={defaultValue?.[column.STORE_COLUMN_NAME]}
+            rules={[{ required: isInsert, message: '새 장소 입력시 이름을 입력해주세요' }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label={column.STORE_COLUMN_ADDRESS}
+            name={column.STORE_COLUMN_ADDRESS}
+            initialValue={defaultValue?.[column.STORE_COLUMN_ADDRESS]}
+            rules={[{ required: isInsert, message: '새 장소 입력시 주소를 입력해주세요' }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label={column.STORE_COLUMN_ROAD_ADDRESS}
+            name={column.STORE_COLUMN_ROAD_ADDRESS}
+            initialValue={defaultValue?.[column.STORE_COLUMN_ROAD_ADDRESS]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label={column.STORE_COLUMN_PHONE_NUMBER}
+            name={column.STORE_COLUMN_PHONE_NUMBER}
+            initialValue={defaultValue?.[column.STORE_COLUMN_PHONE_NUMBER]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label={column.STORE_COLUMN_DESCRIPTION}
+            name={column.STORE_COLUMN_DESCRIPTION}
+            initialValue={defaultValue?.[column.STORE_COLUMN_DESCRIPTION]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label={column.STORE_COLUMN_THUMBNAIL}
+            name={column.STORE_COLUMN_THUMBNAIL}
+            initialValue={defaultValue?.[column.STORE_COLUMN_THUMBNAIL]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="url"
+            name="url"
+            rules={[{ required: isInsert, message: '새 장소 입력시 URL을 입력해주세요' }]}
+          >
+            <Input />
+          </Form.Item>
+        </FormStoreInfoBody>
+        <FormZoonolBody>
+          <Form.Item
+            label={column.STORE_COLUMN_ZOONOL_PLACE}
+            name={column.STORE_COLUMN_ZOONOL_PLACE}
+            initialValue={Boolean(defaultValue?.[column.STORE_COLUMN_ZOONOL_PLACE])}
+            valuePropName="checked"
+          >
+            <Checkbox />
+          </Form.Item>
+          <Form.Item
+            label={column.STORE_COLUMN_NEED_CAGE}
+            name={column.STORE_COLUMN_NEED_CAGE}
+            initialValue={Boolean(defaultValue?.[column.STORE_COLUMN_NEED_CAGE])}
+            valuePropName="checked"
+          >
+            <Checkbox />
+          </Form.Item>
+          <Form.Item
+            label={column.STORE_COLUMN_LARGE_DOG_AVAILABLE}
+            name={column.STORE_COLUMN_LARGE_DOG_AVAILABLE}
+            initialValue={Boolean(defaultValue?.[column.STORE_COLUMN_LARGE_DOG_AVAILABLE])}
+            valuePropName="checked"
+          >
+            <Checkbox />
+          </Form.Item>
+          <Form.Item
+            label={column.STORE_COLUMN_OFF_LEASH}
+            name={column.STORE_COLUMN_OFF_LEASH}
+            initialValue={Boolean(defaultValue?.[column.STORE_COLUMN_OFF_LEASH])}
+            valuePropName="checked"
+          >
+            <Checkbox />
+          </Form.Item>
+          <Form.Item
+            label={column.STORE_COLUMN_ZOONOL_FEED_URL}
+            name={column.STORE_COLUMN_ZOONOL_FEED_URL}
+            initialValue={defaultValue?.[column.STORE_COLUMN_ZOONOL_FEED_URL]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label={column.STORE_COLUMN_ADDITIONAL_INFO}
+            name={column.STORE_COLUMN_ADDITIONAL_INFO}
+            initialValue={defaultValue?.[column.STORE_COLUMN_ADDITIONAL_INFO]}
+          >
+            <Input />
+          </Form.Item>
+        </FormZoonolBody>
+      </FormBody>
+    </Form>
   );
 };
 
-const getStoreListObj = ({ storeInfoArr, onChangeInput, storeInfo }) => {
-  const insertChild = [];
+const InsertPopup = ({ open, closeInsertPopup, fetchInsertStore }) => {
+  const [form] = Form.useForm();
 
-  for (const key in storeInfoArr) {
-    const storeObj = storeInfoArr[key];
-    insertChild.push(getStoreInputObj({ storeObj, onChangeInput, storeInfo }));
-  }
-  return insertChild;
-};
-
-const PopupBody = ({ storeInfoArr, onChangeInput, storeInfo }) => {
-  return <PopupMiddle>{getStoreListObj({ storeInfoArr, onChangeInput, storeInfo })}</PopupMiddle>;
-};
-
-const getStoreInputObj = ({ storeObj, onChangeInput, storeInfo }) => {
-  const insertInputObj = (
-    <StoreItem key={storeObj.id}>
-      <StoreItemLable htmlFor={storeObj.id}>{storeObj.id}</StoreItemLable>
-      <StoreItemInput
-        id={storeObj.id}
-        name={storeObj.name}
-        onChange={onChangeInput}
-        placeholder={storeObj.text}
-        // value={storeInfo[storeObj.id]}
-        defaultValue={storeInfo ? storeInfo[storeObj.id] : ''}
-      />
-    </StoreItem>
-  );
-  return insertInputObj;
-};
-
-const InsertPopup = ({ onChangeInput, getLatLngByRoadAddress, closeInsertPopup }) => {
-  const { storeInfoArr } = useContext(AdminContext);
-
-  const onClickInsertButton = (e) => {
-    getLatLngByRoadAddress();
+  const onSubmit = async (values) => {
+    const naverInfo = getNaverInfoFromUrl(values.url);
+    delete values.url;
+    fetchInsertStore({ ...values, ...naverInfo });
   };
 
-  const onClickCloseButton = (e) => {
+  const closeModal = () => {
     closeInsertPopup();
-  };
-
-  const PopupFooter = ({ btnText }) => {
-    return (
-      <PopupBottom>
-        <ButtonBox>
-          <PopupButton onClick={onClickInsertButton}>{btnText}</PopupButton>
-          <PopupButton onClick={onClickCloseButton}>닫기</PopupButton>
-        </ButtonBox>
-      </PopupBottom>
-    );
+    form.resetFields();
   };
 
   return (
-    <PopupWrapper>
-      <PopupBg />
-      <PopupContainer>
-        <PopupHeader title="스토어 추가" />
-        <PopupBody storeInfoArr={storeInfoArr} onChangeInput={onChangeInput}/>
-        <PopupFooter btnText="추가" />
-      </PopupContainer>
-    </PopupWrapper>
+    <Modal
+      style={{ top: 50 }}
+      open={open}
+      onCancel={closeModal}
+      width={'80%'}
+      footer={[
+        <Button
+          key="submit"
+          type="primary"
+          htmlType="submit"
+          onClick={() =>
+            form
+              .validateFields()
+              .then((values) => {
+                onSubmit(values);
+              })
+              .catch((info) => {
+                console.log('Validate Failed:', info);
+              })
+          }
+        >
+          Submit
+        </Button>,
+        <Button key="close" onClick={closeModal}>
+          Close
+        </Button>,
+      ]}
+    >
+      <PopupTitle>스토어 추가</PopupTitle>
+      <StoreInfoForm form={form} type="insert" />
+    </Modal>
   );
 };
 
-const DeletePopup = ({ storeInfo, closeDeletePopup, fetchDeleteStore }) => {
+const DeletePopup = ({ open, storeInfo, closeDeletePopup, fetchDeleteStore }) => {
   const onClickDeleteButton = (e) => {
     if (storeInfo != null) {
       const seq = storeInfo['seq'];
       fetchDeleteStore({ seq });
     }
   };
-  const onClickCloseButton = (e) => {
-    closeDeletePopup();
-  };
-
-  const PopupBody = ({ storeInfo }) => {
-    return (
-      <PopupMiddle>
-        <PopupText>가게 이름 : {storeInfo.name}</PopupText>
-        <PopupText>가게 주소 : {storeInfo.address}</PopupText>
-        <PopupBoldText>정말로 삭제 하시겠습니까?</PopupBoldText>
-      </PopupMiddle>
-    );
-  };
-
-  const PopupFooter = ({ btnText }) => {
-    return (
-      <PopupBottom>
-        <ButtonBox>
-          <PopupButton onClick={onClickDeleteButton}>{btnText}</PopupButton>
-          <PopupButton onClick={onClickCloseButton}>닫기</PopupButton>
-        </ButtonBox>
-      </PopupBottom>
-    );
-  };
 
   return (
-    <PopupWrapper>
-      <PopupBg />
-      <PopupContainer>
-        <PopupHeader title="스토어 삭제" />
-        <PopupBody storeInfo={storeInfo} />
-        <PopupFooter btnText="삭제" />
-      </PopupContainer>
-    </PopupWrapper>
+    <Modal open={open} onOk={onClickDeleteButton} onCancel={closeDeletePopup}>
+      <PopupTitle>스토어 삭제</PopupTitle>
+      <PopupText>{storeInfo?.name}</PopupText>
+      <PopupText>{storeInfo?.address}</PopupText>
+      <PopupBoldText>정말로 삭제 하시겠습니까?</PopupBoldText>
+    </Modal>
   );
 };
 
-const UpdatePopup = ({
-  storeInfo,
-  onChangeInput,
-  fetchUpdateStore,
-  updateLatLngByRoadAddress,
-  checkUpdatedAddress,
-  closeUpdatePopup,
-}) => {
-  const { storeInfoArr } = useContext(AdminContext);
+const UpdatePopup = ({ open, storeInfo, closeUpdatePopup, fetchUpdateStore }) => {
+  const [form] = Form.useForm();
 
-  const onClickUpdateButton = (e) => {
-    if (storeInfo != null) {
-      const seq = storeInfo['seq'];
-      const isUpdatedAddress = checkUpdatedAddress();
+  const checkUpdatedAddress = (prevValues, values) => {
+    const prevAddress = prevValues['address'];
+    const curAddress = values['address'];
+    if (curAddress !== prevAddress) {
+      return true;
+    }
+    return false;
+  };
+
+  const onSubmit = async (values) => {
+    const { seq } = storeInfo;
+    const updateStoreInfo = { seq, ...values };
+
+    if (storeInfo) {
+      const isUpdatedAddress = checkUpdatedAddress(storeInfo, values);
       if (isUpdatedAddress) {
-        updateLatLngByRoadAddress({ seq, isUpdatedAddress });
+        if (!values.url) return alert('URL을 입려해주세요');
+        const naverInfo = getNaverInfoFromUrl(values.url);
+        delete naverInfo.url;
+        delete updateStoreInfo.url;
+        fetchUpdateStore({ ...updateStoreInfo, ...naverInfo });
       } else {
-        fetchUpdateStore({ seq, isUpdatedAddress });
+        fetchUpdateStore(updateStoreInfo);
       }
     }
   };
 
-  const onClickCloseButton = (e) => {
+  const closeModal = () => {
     closeUpdatePopup();
-  };
-
-  const PopupFooter = ({ btnText }) => {
-    return (
-      <PopupBottom>
-        <ButtonBox>
-          <PopupButton onClick={onClickUpdateButton}>{btnText}</PopupButton>
-          <PopupButton onClick={onClickCloseButton}>닫기</PopupButton>
-        </ButtonBox>
-      </PopupBottom>
-    );
+    form.resetFields();
   };
 
   return (
-    <PopupWrapper>
-      <PopupBg />
-      <PopupContainer>
-        <PopupHeader title="스토어 수정" />
-        <PopupBody storeInfoArr={storeInfoArr} onChangeInput={onChangeInput} storeInfo={storeInfo}/>
-        <PopupFooter btnText="수정" />
-      </PopupContainer>
-    </PopupWrapper>
+    <Modal
+      open={open}
+      onCancel={closeModal}
+      style={{ top: 50 }}
+      width={'80%'}
+      footer={[
+        <Button
+          key="submit"
+          type="primary"
+          htmlType="submit"
+          onClick={() =>
+            form
+              .validateFields()
+              .then((values) => {
+                onSubmit(values);
+              })
+              .catch((info) => {
+                console.log('Validate Failed:', info);
+              })
+          }
+        >
+          Submit
+        </Button>,
+        <Button key="close" onClick={closeModal}>
+          Close
+        </Button>,
+      ]}
+    >
+      <PopupTitle>스토어 수정</PopupTitle>
+      <StoreInfoForm form={form} defaultValue={storeInfo} />
+    </Modal>
   );
 };
-
-const PopupWrapper = styled.div`
-  width: 100vw;
-  height: 100vh;
-  z-index: 100;
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const PopupBg = styled.div`
-  width: 100vw;
-  height: 100vh;
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-color: #000;
-  opacity: 0.7;
-`;
-
-const PopupContainer = styled.div`
-  position: relative;
-  width: 50vw;
-  top: 0;
-  left: 0;
-  z-index: 1;
-  background-color: #fff;
-`;
-
-const PopupTop = styled.div`
-  width: 100%;
-  border: 1px solid #000;
-  box-sizing: border-box;
-  padding: 10px;
-`;
 
 const PopupTitle = styled.div`
   font-weight: bold;
   text-align: center;
-`;
-
-const PopupMiddle = styled.div`
-  width: 100%;
-  border: 1px solid #000;
-  box-sizing: border-box;
-  padding: 10px;
-`;
-
-const StoreItem = styled.div`
-  width: 100%;
-`;
-
-const StoreItemLable = styled.label`
-  display: inline-block;
-  width: 33%;
-  padding: 5px 15px;
-  box-sizing: border-box;
-`;
-
-const StoreItemInput = styled.input`
-  display: inline-block;
-  width: 67%;
-  margin: 0;
-  padding: 5px 15px;
-  box-sizing: border-box;
+  font-size: 20px;
+  font-family: 'Pretendard';
 `;
 
 const PopupText = styled.div`
@@ -243,6 +290,8 @@ const PopupText = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   text-align: center;
+  font-size: 16px;
+  font-family: 'Pretendard';
 `;
 
 const PopupBoldText = styled.div`
@@ -255,24 +304,15 @@ const PopupBoldText = styled.div`
   margin: 10px 0;
 `;
 
-const PopupBottom = styled.div`
-  width: 100%;
-  border: 1px solid #000;
-  box-sizing: border-box;
-  padding: 10px;
-`;
-
-const ButtonBox = styled.div`
+const FormBody = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: center;
+  margin-top: 10px;
 `;
 
-const PopupButton = styled.button`
-  width: 20vw;
-  box-sizing: border-box;
-  padding: 10px;
-  margin: 5px;
+const FormStoreInfoBody = styled.div`
+  margin-right: 50px;
 `;
+
+const FormZoonolBody = styled.div``;
 
 export { InsertPopup, DeletePopup, UpdatePopup };
