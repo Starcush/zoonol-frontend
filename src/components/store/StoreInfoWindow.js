@@ -8,6 +8,7 @@ import {
   RESTAURANT_CATEGORY_SEQ,
   CAFE_CATEGORY_SEQ,
   PUB_CATEGORY_SEQ,
+  LIBRARY_CATEGORY_SEQ,
 } from '@/constants/constant';
 import { ButtonSheetCloseIcon, CloseIcon } from '@/icons/icon';
 import ImageLoading from '@/components/common/ImageLoading';
@@ -37,9 +38,7 @@ const StoreInfoWindow = ({ store, closeInfoWindow }) => {
 
   const isZoonolPlace = Boolean(zoonolPlace);
   const convertedInfoUpdatedAt = dayjs(infoUpdatedAt).format('YYYY년 M월 D일');
-  const largeDogAvailableMessage = largeDogAvailable
-    ? '대형견 입장 가능'
-    : '대형견 입장 불가능';
+  const largeDogAvailableMessage = largeDogAvailable ? '대형견 입장 가능' : '대형견 입장 불가능';
   let entranceCondition = '';
   let category = '';
 
@@ -62,6 +61,9 @@ const StoreInfoWindow = ({ store, closeInfoWindow }) => {
       break;
     case PUB_CATEGORY_SEQ:
       category = '호프';
+      break;
+    case LIBRARY_CATEGORY_SEQ:
+      category = '서점';
       break;
   }
 
@@ -99,11 +101,7 @@ const StoreInfoWindow = ({ store, closeInfoWindow }) => {
               </ZoonolInfo>
               {zoonolFeedUrl && (
                 <ZoonolInfo>
-                  <StoreLink
-                    href={zoonolFeedUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
+                  <StoreLink href={zoonolFeedUrl} target="_blank" rel="noreferrer">
                     {`@${name} in zooonol_`}
                   </StoreLink>
                 </ZoonolInfo>
@@ -131,9 +129,7 @@ const StoreInfoWindow = ({ store, closeInfoWindow }) => {
         )}
         {isZoonolPlace && (
           <InfoUpdateAtWrapper>
-            <InfoUpdateAt>
-              정보 업데이트 시기: {convertedInfoUpdatedAt}
-            </InfoUpdateAt>
+            <InfoUpdateAt>정보 업데이트 시기: {convertedInfoUpdatedAt}</InfoUpdateAt>
             <InfoUpdateAt small>
               * 정보가 변경됐다면{' '}
               <ZoonolInstagramLink

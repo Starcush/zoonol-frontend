@@ -69,9 +69,7 @@ const Map = ({ children, stores }) => {
   const handleMarkersByZoom = (markersInfo, hideStoreName) => {
     markersInfo.forEach(({ marker, store }) => {
       const defaultIconOption = marker.getOptions().icon;
-      const content = renderToStaticMarkup(
-        <Marker store={store} hideStoreName={hideStoreName} />
-      );
+      const content = renderToStaticMarkup(<Marker store={store} hideStoreName={hideStoreName} />);
       marker.setOptions({ icon: { ...defaultIconOption, content } });
     });
   };
@@ -79,12 +77,7 @@ const Map = ({ children, stores }) => {
   return (
     <Wrapper id="map">
       {children}
-      {visibleStore && (
-        <StoreInfoWindow
-          store={visibleStore}
-          closeInfoWindow={closeInfoWindow}
-        />
-      )}
+      {visibleStore && <StoreInfoWindow store={visibleStore} closeInfoWindow={closeInfoWindow} />}
       <UserLocation setUserLocation={setUserLocation} />
     </Wrapper>
   );
