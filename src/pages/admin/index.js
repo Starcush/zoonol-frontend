@@ -11,7 +11,7 @@ import * as Icon from '@/icons/icon';
 
 export default function Admin() {
   const [stores, setStores] = useState([]);
-  const [keyword, setKeyword] = useState();
+  const [keyword, setKeyword] = useState('');
   const [showInsertPopup, setShowInsertPopup] = useState(false);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const [showUpdatePopup, setShowUpdatePopup] = useState(false);
@@ -37,7 +37,7 @@ export default function Admin() {
     }
   };
 
-  const onSearch = (e) => {
+  const onSearch = () => {
     fetchGetStoreData(keyword);
   };
 
@@ -131,7 +131,7 @@ export default function Admin() {
               onKeyDown={onKeyPressSearchInput}
               placeholder="찾을 가게 이름을 입력해주세요."
             />
-            <Button onClick={onSearch}>검색</Button>
+            <Button onClick={() => onSearch()}>검색</Button>
           </SearchBox>
           <InsertBox>
             <Button type="primary" onClick={openInsertPopup}>
@@ -145,7 +145,6 @@ export default function Admin() {
           openUpdatePopup={openUpdatePopup}
         />
       </TableWrapper>
-
       <InsertPopup
         fetchInsertStore={fetchInsertStore}
         open={showInsertPopup}
@@ -157,12 +156,14 @@ export default function Admin() {
         closeDeletePopup={closeDeletePopup}
         fetchDeleteStore={fetchDeleteStore}
       />
-      <UpdatePopup
-        open={showUpdatePopup}
-        storeInfo={selectStore}
-        closeUpdatePopup={closeUpdatePopup}
-        fetchUpdateStore={fetchUpdateStore}
-      />
+      {selectStore && (
+        <UpdatePopup
+          open={showUpdatePopup}
+          storeInfo={selectStore}
+          closeUpdatePopup={closeUpdatePopup}
+          fetchUpdateStore={fetchUpdateStore}
+        />
+      )}
     </Wrapper>
   );
 }

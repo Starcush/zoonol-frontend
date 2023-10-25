@@ -13,16 +13,12 @@ const storeService = {
     return data;
   },
   async insertStore({ storeInfo }) {
-    const queryParams = { storeInfo };
-    const { data } = await defaultAxios.post(
-      '/store/insert-store',
-      {
-        // ...storeInfo,
-        ...queryParams['storeInfo'],
+    const { data } = await defaultAxios.post('/store', storeInfo, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
       },
-      {}
-    );
-    return data;
+    });
+    return data?.id;
   },
   async deleteStoreBySeq({ seq }) {
     const queryParams = { seq };
@@ -32,15 +28,11 @@ const storeService = {
     return data;
   },
   async updateStore({ storeInfo }) {
-    const queryParams = { storeInfo };
-    const { data } = await defaultAxios.post(
-      '/store/update-store',
-      {
-        // params: queryParams,
-        ...queryParams['storeInfo'],
+    const { data } = await defaultAxios.patch('/store', storeInfo, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
       },
-      {}
-    );
+    });
     return data;
   },
 };
