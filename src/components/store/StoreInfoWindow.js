@@ -68,8 +68,7 @@ const StoreInfoWindow = ({ store, closeInfoWindow }) => {
   }
 
   const handleDragEnd = (_, info) => {
-    const shouldClose =
-      info.velocity.y > 20 || (info.velocity.y >= 0 && info.point.y > 45);
+    const shouldClose = info.velocity.y > 20 || (info.velocity.y >= 0 && info.point.y > 45);
     if (shouldClose) {
       controls.start('hidden');
     } else {
