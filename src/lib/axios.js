@@ -11,8 +11,7 @@ const isDev = env === 'development';
 export const defaultAxios = Axios.create({
   baseURL: isDev
     ? process.env.NEXT_PUBLIC_LOCAL_ENDPOINT
-    : process.env.NEXT_PUBLIC_PRODUCTION_ENDPOINT,
-  withCredentials: true,
+    : process.env.NEXT_PUBLIC_PRODUCTION_ENDPOINT
 });
 
 const successHandler = (res) => {

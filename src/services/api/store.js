@@ -1,4 +1,5 @@
 import { defaultAxios } from '@/lib/axios';
+// import axios from 'axios';
 
 const storeService = {
   async getStoreList() {
@@ -35,6 +36,10 @@ const storeService = {
     });
     return data;
   },
+  async naverAddressVertification() {
+    const { data } = await defaultAxios.get('/store/address-vertification');
+    return data;
+  }
 };
 
 export { storeService };
