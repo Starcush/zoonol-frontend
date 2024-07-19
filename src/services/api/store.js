@@ -1,7 +1,8 @@
 import { defaultAxios } from '@/lib/axios';
 
 const storeService = {
-  async getStoreList() {
+  async getStoreList(params) {
+    console.log('params: ', params);
     const { data } = await defaultAxios.get('/store/list');
     return data;
   },

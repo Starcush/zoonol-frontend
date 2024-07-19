@@ -7,3 +7,8 @@ body {
   padding: 0;
   margin: 0;
 }
+
+.initial-loading-text {
+  font-weight: 600;
+  padding: 10px;
+}
