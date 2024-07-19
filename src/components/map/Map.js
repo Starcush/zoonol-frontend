@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Marker } from '@/components/map/Marker';
 import StoreInfoWindow from '@/components/store/StoreInfoWindow';
 import UserLocation from '@/components/map/UserLocation';
+import Filter from '@/components/map/Filter';
 
 const hongdae = { lat: 37.557527, lng: 126.9244669 };
 const MAX_ZOOM_LEVEL = 16;
@@ -76,6 +77,7 @@ const Map = ({ children, stores }) => {
 
   return (
     <Wrapper id="map">
+      <Filter />
       {children}
       {visibleStore && <StoreInfoWindow store={visibleStore} closeInfoWindow={closeInfoWindow} />}
       <UserLocation setUserLocation={setUserLocation} />

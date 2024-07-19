@@ -1,24 +1,31 @@
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
-import styled from 'styled-components';
 import { storeService } from '@/services/api/store';
 import Map from '@/components/map/Map';
+import { useStoreFilter } from '@/stores/store';
 
 // 최신화된 Next.js 적용하는거 생각하기 -> React도 변화가 많아서 그것도 같이 배운다는 느낌
+// 필터한 데이터를 여기서 다시 해줘야 하는건가?
+// 필터한값을 별도로 나눠서 하자
+// 그러면 이걸 드릴링을 해야하나?
+// 그건 아닌거 같고
 
 export default function Home() {
   const [stores, setStores] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { storeFilter } = useStoreFilter();
+  // 이거가 filter에서 변경되야 하는데
+  console.log('storeFilter: ', storeFilter);
 
   useEffect(() => {
     const fetchInitalStoreData = async () => {
       const { getStoreList } = storeService;
-      const { stores } = await getStoreList();
+      const { stores } = await getStoreList(storeFilter);
       setStores(stores);
       setIsLoading(false);
     };
     fetchInitalStoreData();
-  }, []);
+  }, [storeFilter]);
 
   return (
     <>
@@ -39,17 +46,11 @@ export default function Home() {
       </Head>
       <main>
         {isLoading ? (
-          <LoadingWrapper>반려견 동반 장소 지도 로딩중...</LoadingWrapper>
+          <div className="initial-loading-text">반려견 동반 장소 지도 로딩중...</div>
         ) : (
           <Map stores={stores} />
-          // <></>
         )}
       </main>
     </>
   );
 }
-
-const LoadingWrapper = styled.div`
-  font-weight: 600;
-  padding: 10px;
-`;
